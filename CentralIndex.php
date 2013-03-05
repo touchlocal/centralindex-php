@@ -64,6 +64,9 @@
 			curl_close($ch);
 			$return = false;
 			$arr = json_decode($output,1);
+			if(!$arr) {
+			  $arr = $output;
+			}
 
 
 			if($this->debugMode){
@@ -642,14 +645,12 @@
    *
    *  @param string
    *  @param country
-   *  @param use_cache
    *  @return - the data from the api
   */
-  public function getLookupLocation( $string, $country, $use_cache) {
+  public function getLookupLocation( $string, $country) {
     $params = array();
     $params['string'] = $string;
     $params['country'] = $country;
-    $params['use_cache'] = $use_cache;
     return CentralIndex::doCurl("GET","/lookup/location",$params);
   }
 
@@ -659,14 +660,12 @@
    *
    *  @param string - A string to search against, E.g. Plumbers
    *  @param language - An ISO compatible language code, E.g. en
-   *  @param use_cache
    *  @return - the data from the api
   */
-  public function getLookupCategory( $string, $language, $use_cache) {
+  public function getLookupCategory( $string, $language) {
     $params = array();
     $params['string'] = $string;
     $params['language'] = $language;
-    $params['use_cache'] = $use_cache;
     return CentralIndex::doCurl("GET","/lookup/category",$params);
   }
 
@@ -676,14 +675,12 @@
    *
    *  @param id
    *  @param type
-   *  @param use_cache
    *  @return - the data from the api
   */
-  public function getLookupLegacyCategory( $id, $type, $use_cache) {
+  public function getLookupLegacyCategory( $id, $type) {
     $params = array();
     $params['id'] = $id;
     $params['type'] = $type;
-    $params['use_cache'] = $use_cache;
     return CentralIndex::doCurl("GET","/lookup/legacy/category",$params);
   }
 
@@ -1905,14 +1902,12 @@
    *
    *  @param str - A string to search against, E.g. Plumbers e.g. but
    *  @param language - An ISO compatible language code, E.g. en e.g. en
-   *  @param use_cache
    *  @return - the data from the api
   */
-  public function getAutocompleteCategory( $str, $language, $use_cache) {
+  public function getAutocompleteCategory( $str, $language) {
     $params = array();
     $params['str'] = $str;
     $params['language'] = $language;
-    $params['use_cache'] = $use_cache;
     return CentralIndex::doCurl("GET","/autocomplete/category",$params);
   }
 
@@ -1922,14 +1917,12 @@
    *
    *  @param str - A string to search against, E.g. Dub e.g. dub
    *  @param country - Which country to return results for. An ISO compatible country code, E.g. ie e.g. ie
-   *  @param use_cache
    *  @return - the data from the api
   */
-  public function getAutocompleteLocation( $str, $country, $use_cache) {
+  public function getAutocompleteLocation( $str, $country) {
     $params = array();
     $params['str'] = $str;
     $params['country'] = $country;
-    $params['use_cache'] = $use_cache;
     return CentralIndex::doCurl("GET","/autocomplete/location",$params);
   }
 
