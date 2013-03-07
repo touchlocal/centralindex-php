@@ -1164,6 +1164,21 @@
 
 
   /**
+   * Format an address according to the rules of the country supplied
+   *
+   *  @param address - The address to format
+   *  @param country - The country where the address is based
+   *  @return - the data from the api
+  */
+  public function getToolsFormatAddress( $address, $country) {
+    $params = array();
+    $params['address'] = $address;
+    $params['country'] = $country;
+    return CentralIndex::doCurl("GET","/tools/format/address",$params);
+  }
+
+
+  /**
    * With a known entity id, an invoice_address object can be updated.
    *
    *  @param entity_id
