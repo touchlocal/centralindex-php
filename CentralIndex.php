@@ -596,14 +596,13 @@
    *  @param longitude
    *  @param timezone
    *  @param telephone_number
-   *  @param telephone_type
    *  @param email
    *  @param website
    *  @param category_id
    *  @param category_name
    *  @return - the data from the api
   */
-  public function putBusiness( $name, $address1, $address2, $address3, $district, $town, $county, $postcode, $country, $latitude, $longitude, $timezone, $telephone_number, $telephone_type, $email, $website, $category_id, $category_name) {
+  public function putBusiness( $name, $address1, $address2, $address3, $district, $town, $county, $postcode, $country, $latitude, $longitude, $timezone, $telephone_number, $email, $website, $category_id, $category_name) {
     $params = array();
     $params['name'] = $name;
     $params['address1'] = $address1;
@@ -618,7 +617,6 @@
     $params['longitude'] = $longitude;
     $params['timezone'] = $timezone;
     $params['telephone_number'] = $telephone_number;
-    $params['telephone_type'] = $telephone_type;
     $params['email'] = $email;
     $params['website'] = $website;
     $params['category_id'] = $category_id;
@@ -630,12 +628,14 @@
   /**
    * Provides a personalised URL to redirect a user to add an entity to Central Index
    *
-   *  @param language - The language to use to render the add path
+   *  @param language - The language to use to render the add path e.g. en
+   *  @param portal_name - The name of the website that data is to be added on e.g. YourLocal
    *  @return - the data from the api
   */
-  public function getEntityAdd( $language) {
+  public function getEntityAdd( $language, $portal_name) {
     $params = array();
     $params['language'] = $language;
+    $params['portal_name'] = $portal_name;
     return CentralIndex::doCurl("GET","/entity/add",$params);
   }
 
@@ -775,21 +775,13 @@
    *  @param entity_id
    *  @param number
    *  @param description
-   *  @param premium_rate
-   *  @param telephone_type
-   *  @param tps
-   *  @param ctps
    *  @return - the data from the api
   */
-  public function postEntityPhone( $entity_id, $number, $description, $premium_rate, $telephone_type, $tps, $ctps) {
+  public function postEntityPhone( $entity_id, $number, $description) {
     $params = array();
     $params['entity_id'] = $entity_id;
     $params['number'] = $number;
     $params['description'] = $description;
-    $params['premium_rate'] = $premium_rate;
-    $params['telephone_type'] = $telephone_type;
-    $params['tps'] = $tps;
-    $params['ctps'] = $ctps;
     return CentralIndex::doCurl("POST","/entity/phone",$params);
   }
 
@@ -815,15 +807,13 @@
    *  @param entity_id
    *  @param number
    *  @param description
-   *  @param premium_rate
    *  @return - the data from the api
   */
-  public function postEntityFax( $entity_id, $number, $description, $premium_rate) {
+  public function postEntityFax( $entity_id, $number, $description) {
     $params = array();
     $params['entity_id'] = $entity_id;
     $params['number'] = $number;
     $params['description'] = $description;
-    $params['premium_rate'] = $premium_rate;
     return CentralIndex::doCurl("POST","/entity/fax",$params);
   }
 
