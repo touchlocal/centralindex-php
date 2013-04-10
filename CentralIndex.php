@@ -1,3 +1,4 @@
+Starting Wolf using 'dev' configuration
 <?php
 
   /**
@@ -637,6 +638,23 @@
     $params['language'] = $language;
     $params['portal_name'] = $portal_name;
     return CentralIndex::doCurl("GET","/entity/add",$params);
+  }
+
+
+  /**
+   * Provides a personalised URL to redirect a user to claim an entity in the Central Index
+   *
+   *  @param language - The language to use to render the add path e.g. en
+   *  @param portal_name - The name of the website that data is to be added on e.g. YourLocal
+   *  @param entity_id - The id of the index card that is being claimed e.g. 379236808425472
+   *  @return - the data from the api
+  */
+  public function getEntityClaim( $language, $portal_name, $entity_id) {
+    $params = array();
+    $params['language'] = $language;
+    $params['portal_name'] = $portal_name;
+    $params['entity_id'] = $entity_id;
+    return CentralIndex::doCurl("GET","/entity/claim",$params);
   }
 
 
@@ -2293,6 +2311,66 @@
     $params = array();
     $params['entity_id'] = $entity_id;
     return CentralIndex::doCurl("GET","/publisher/byEntityId",$params);
+  }
+
+
+  /**
+   * Update/Add a country
+   *
+   *  @param country_id
+   *  @param name
+   *  @param synonyms
+   *  @param continentName
+   *  @param continent
+   *  @param geonameId
+   *  @param dbpediaURL
+   *  @param freebaseURL
+   *  @param population
+   *  @param currencyCode
+   *  @param languages
+   *  @param areaInSqKm
+   *  @param capital
+   *  @param east
+   *  @param west
+   *  @param north
+   *  @param south
+   *  @param claimPrice
+   *  @return - the data from the api
+  */
+  public function postCountry( $country_id, $name, $synonyms, $continentName, $continent, $geonameId, $dbpediaURL, $freebaseURL, $population, $currencyCode, $languages, $areaInSqKm, $capital, $east, $west, $north, $south, $claimPrice) {
+    $params = array();
+    $params['country_id'] = $country_id;
+    $params['name'] = $name;
+    $params['synonyms'] = $synonyms;
+    $params['continentName'] = $continentName;
+    $params['continent'] = $continent;
+    $params['geonameId'] = $geonameId;
+    $params['dbpediaURL'] = $dbpediaURL;
+    $params['freebaseURL'] = $freebaseURL;
+    $params['population'] = $population;
+    $params['currencyCode'] = $currencyCode;
+    $params['languages'] = $languages;
+    $params['areaInSqKm'] = $areaInSqKm;
+    $params['capital'] = $capital;
+    $params['east'] = $east;
+    $params['west'] = $west;
+    $params['north'] = $north;
+    $params['south'] = $south;
+    $params['claimPrice'] = $claimPrice;
+    return CentralIndex::doCurl("POST","/country",$params);
+  }
+
+
+  /**
+   * Fetching a country
+   *
+   *  @param country_id
+   *  @return - the data from the api
+  */
+  public function getCountry( $country_id) {
+    $params = array();
+    $params['country_id'] = $country_id;
+    return CentralIndex::doCurl("GET","/country",$params);
   }
 
 
