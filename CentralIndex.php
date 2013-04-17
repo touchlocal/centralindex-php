@@ -140,6 +140,19 @@ Starting Wolf using 'dev' configuration
 
 
   /**
+   * Uploads a JSON file of known format and bulk inserts into DB
+   *
+   *  @param data
+   *  @return - the data from the api
+  */
+  public function postEntityBulkJson( $data) {
+    $params = array();
+    $params['data'] = $data;
+    return CentralIndex::doCurl("POST","/entity/bulk/json",$params);
+  }
+
+
+  /**
    * Shows the current status of a bulk upload
    *
    *  @param upload_id
@@ -149,6 +162,19 @@ Starting Wolf using 'dev' configuration
     $params = array();
     $params['upload_id'] = $upload_id;
     return CentralIndex::doCurl("GET","/entity/bulk/csv/status",$params);
+  }
+
+
+  /**
+   * Shows the current status of a bulk JSON upload
+   *
+   *  @param upload_id
+   *  @return - the data from the api
+  */
+  public function getEntityBulkJsonStatus( $upload_id) {
+    $params = array();
+    $params['upload_id'] = $upload_id;
+    return CentralIndex::doCurl("GET","/entity/bulk/json/status",$params);
   }
 
 
@@ -600,10 +626,10 @@ Starting Wolf using 'dev' configuration
    *  @param email
    *  @param website
    *  @param category_id
-   *  @param category_name
+   *  @param category_type
    *  @return - the data from the api
   */
-  public function putBusiness( $name, $address1, $address2, $address3, $district, $town, $county, $postcode, $country, $latitude, $longitude, $timezone, $telephone_number, $email, $website, $category_id, $category_name) {
+  public function putBusiness( $name, $address1, $address2, $address3, $district, $town, $county, $postcode, $country, $latitude, $longitude, $timezone, $telephone_number, $email, $website, $category_id, $category_type) {
     $params = array();
     $params['name'] = $name;
     $params['address1'] = $address1;
@@ -621,7 +647,7 @@ Starting Wolf using 'dev' configuration
     $params['email'] = $email;
     $params['website'] = $website;
     $params['category_id'] = $category_id;
-    $params['category_name'] = $category_name;
+    $params['category_type'] = $category_type;
     return CentralIndex::doCurl("PUT","/business",$params);
   }
 
@@ -642,18 +668,18 @@ Starting Wolf using 'dev' configuration
 
 
   /**
-   * Provides a personalised URL to redirect a user to claim an entity in the Central Index
+   * Provides a personalised URL to redirect a user to claim an entity on Central Index
    *
-   *  @param language - The language to use to render the add path e.g. en
-   *  @param portal_name - The name of the website that data is to be added on e.g. YourLocal
-   *  @param entity_id - The id of the index card that is being claimed e.g. 379236808425472
+   *  @param entity_id - Entity ID to be claimed e.g. 380348266819584
+   *  @param language - The language to use to render the claim path e.g. en
+   *  @param portal_name - The name of the website that entity is being claimed on e.g. YourLocal
    *  @return - the data from the api
   */
-  public function getEntityClaim( $language, $portal_name, $entity_id) {
+  public function getEntityClaim( $entity_id, $language, $portal_name) {
     $params = array();
+    $params['entity_id'] = $entity_id;
     $params['language'] = $language;
     $params['portal_name'] = $portal_name;
-    $params['entity_id'] = $entity_id;
     return CentralIndex::doCurl("GET","/entity/claim",$params);
   }
 
@@ -977,18 +1003,31 @@ Starting Wolf using 'dev' configuration
 
 
   /**
+   * Returns the supplied wolf category object by fetching the supplied category_id from our categories object.
+   *
+   *  @param category_id
+   *  @return - the data from the api
+  */
+  public function getCategory( $category_id) {
+    $params = array();
+    $params['category_id'] = $category_id;
+    return CentralIndex::doCurl("GET","/category",$params);
+  }
+
+
+  /**
    * With a known entity id, an category object can be added.
    *
    *  @param entity_id
    *  @param category_id
-   *  @param category_name
+   *  @param category_type
    *  @return - the data from the api
   */
-  public function postEntityCategory( $entity_id, $category_id, $category_name) {
+  public function postEntityCategory( $entity_id, $category_id, $category_type) {
     $params = array();
     $params['entity_id'] = $entity_id;
     $params['category_id'] = $category_id;
-    $params['category_name'] = $category_name;
+    $params['category_type'] = $category_type;
     return CentralIndex::doCurl("POST","/entity/category",$params);
   }
 
@@ -1034,16 +1073,18 @@ Starting Wolf using 'dev' configuration
    *  @param company_name
    *  @param latitude
    *  @param longitude
+   *  @param country
    *  @param name_strictness
    *  @param location_strictness
    *  @return - the data from the api
   */
-  public function getMatchByphone( $phone, $company_name, $latitude, $longitude, $name_strictness, $location_strictness) {
+  public function getMatchByphone( $phone, $company_name, $latitude, $longitude, $country, $name_strictness, $location_strictness) {
     $params = array();
     $params['phone'] = $phone;
     $params['company_name'] = $company_name;
     $params['latitude'] = $latitude;
     $params['longitude'] = $longitude;
+    $params['country'] = $country;
     $params['name_strictness'] = $name_strictness;
     $params['location_strictness'] = $location_strictness;
     return CentralIndex::doCurl("GET","/match/byphone",$params);
@@ -2371,6 +2412,42 @@ Starting Wolf using 'dev' configuration
     $params = array();
     $params['country_id'] = $country_id;
     return CentralIndex::doCurl("GET","/country",$params);
+  }
+
+
+  /**
+   * For insance, reporting a phone number as wrong
+   *
+   *  @param entity_id - A valid entity_id e.g. 379236608286720
+   *  @param gen_id - The gen_id for the item being reported
+   *  @param signal_type - The signal that is to be reported e.g. wrong
+   *  @param data_type - The type of data being reported
+   *  @return - the data from the api
+  */
+  public function postSignal( $entity_id, $gen_id, $signal_type, $data_type) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['gen_id'] = $gen_id;
+    $params['signal_type'] = $signal_type;
+    $params['data_type'] = $data_type;
+    return CentralIndex::doCurl("POST","/signal",$params);
+  }
+
+
+  /**
+   * Get the number of times an entity has been served out as an advert or on serps/bdp pages
+   *
+   *  @param entity_id - A valid entity_id e.g. 379236608286720
+   *  @param year - The year to report on
+   *  @param month - The month to report on
+   *  @return - the data from the api
+  */
+  public function getStatsEntityBy_date( $entity_id, $year, $month) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['year'] = $year;
+    $params['month'] = $month;
+    return CentralIndex::doCurl("GET","/stats/entity/by_date",$params);
   }
 
 
