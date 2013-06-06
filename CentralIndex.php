@@ -1,4 +1,3 @@
-Starting Wolf using 'dev' configuration
 <?php
 
   /**
@@ -1832,19 +1831,15 @@ Starting Wolf using 'dev' configuration
    *
    *  @param entity_id
    *  @param title
-   *  @param description
-   *  @param thumbnail
    *  @param embed_code
    *  @return - the data from the api
   */
-  public function postEntityVideo( $entity_id, $title, $description, $thumbnail, $embed_code) {
+  public function postEntityVideoYoutube( $entity_id, $title, $embed_code) {
     $params = array();
     $params['entity_id'] = $entity_id;
     $params['title'] = $title;
-    $params['description'] = $description;
-    $params['thumbnail'] = $thumbnail;
     $params['embed_code'] = $embed_code;
-    return CentralIndex::doCurl("POST","/entity/video",$params);
+    return CentralIndex::doCurl("POST","/entity/video/youtube",$params);
   }
 
 
@@ -2787,8 +2782,6 @@ Starting Wolf using 'dev' configuration
    *  @param less - the LESS configuration to use to overrides the Bootstrap CSS
    *  @param language - the language in which to render the flatpack site
    *  @param country - the country to use for searches etc
-   *  @param afsId - the adsense-for-search id to use for Google ads on serps
-   *  @param afcId - the adsense-for-content id to use for Google ads on bdps
    *  @param mapsType - the type of maps to use
    *  @param mapKey - the nokia map key to use to render maps
    *  @param analyticsHTML - the html to insert to record page views
@@ -2814,10 +2807,12 @@ Starting Wolf using 'dev' configuration
    *  @param footer_menu - the JSON that describes a navigation at the bottom of the page
    *  @param bdpTitle - The page title of the entity business profile pages
    *  @param bdpDescription - The meta description of entity business profile pages
+   *  @param bdpAds - The block of HTML/JS that renders Ads on BDPs
    *  @param serpTitle - The page title of the serps
    *  @param serpDescription - The meta description of serps
    *  @param serpNumberResults - The number of results per search page
    *  @param serpNumberAdverts - The number of adverts to show on the first search page
+   *  @param serpAds - The block of HTML/JS that renders Ads on Serps
    *  @param cookiePolicyUrl - The cookie policy url of the flatpack
    *  @param cookiePolicyNotice - Whether to show the cookie policy on this flatpack
    *  @param addBusinessButtonText - The text used in the 'Add your business' button
@@ -2825,7 +2820,7 @@ Starting Wolf using 'dev' configuration
    *  @param facebookUrl - Facebook link
    *  @return - the data from the api
   */
-  public function postFlatpack( $flatpack_id, $domainName, $flatpackName, $less, $language, $country, $afsId, $afcId, $mapsType, $mapKey, $analyticsHTML, $searchFormShowOn, $searchFormShowKeywordsBox, $searchFormShowLocationBox, $searchFormKeywordsAutoComplete, $searchFormLocationsAutoComplete, $searchFormDefaultLocation, $searchFormPlaceholderKeywords, $searchFormPlaceholderLocation, $searchFormKeywordsLabel, $searchFormLocationLabel, $cannedLinksHeader, $homepageTitle, $homepageDescription, $homepageIntroTitle, $homepageIntroText, $adblockHeader, $adblock728x90, $adblock468x60, $header_menu, $footer_menu, $bdpTitle, $bdpDescription, $serpTitle, $serpDescription, $serpNumberResults, $serpNumberAdverts, $cookiePolicyUrl, $cookiePolicyNotice, $addBusinessButtonText, $twitterUrl, $facebookUrl) {
+  public function postFlatpack( $flatpack_id, $domainName, $flatpackName, $less, $language, $country, $mapsType, $mapKey, $analyticsHTML, $searchFormShowOn, $searchFormShowKeywordsBox, $searchFormShowLocationBox, $searchFormKeywordsAutoComplete, $searchFormLocationsAutoComplete, $searchFormDefaultLocation, $searchFormPlaceholderKeywords, $searchFormPlaceholderLocation, $searchFormKeywordsLabel, $searchFormLocationLabel, $cannedLinksHeader, $homepageTitle, $homepageDescription, $homepageIntroTitle, $homepageIntroText, $adblockHeader, $adblock728x90, $adblock468x60, $header_menu, $footer_menu, $bdpTitle, $bdpDescription, $bdpAds, $serpTitle, $serpDescription, $serpNumberResults, $serpNumberAdverts, $serpAds, $cookiePolicyUrl, $cookiePolicyNotice, $addBusinessButtonText, $twitterUrl, $facebookUrl) {
     $params = array();
     $params['flatpack_id'] = $flatpack_id;
     $params['domainName'] = $domainName;
@@ -2833,8 +2828,6 @@ Starting Wolf using 'dev' configuration
     $params['less'] = $less;
     $params['language'] = $language;
     $params['country'] = $country;
-    $params['afsId'] = $afsId;
-    $params['afcId'] = $afcId;
     $params['mapsType'] = $mapsType;
     $params['mapKey'] = $mapKey;
     $params['analyticsHTML'] = $analyticsHTML;
@@ -2860,10 +2853,12 @@ Starting Wolf using 'dev' configuration
     $params['footer_menu'] = $footer_menu;
     $params['bdpTitle'] = $bdpTitle;
     $params['bdpDescription'] = $bdpDescription;
+    $params['bdpAds'] = $bdpAds;
     $params['serpTitle'] = $serpTitle;
     $params['serpDescription'] = $serpDescription;
     $params['serpNumberResults'] = $serpNumberResults;
     $params['serpNumberAdverts'] = $serpNumberAdverts;
+    $params['serpAds'] = $serpAds;
     $params['cookiePolicyUrl'] = $cookiePolicyUrl;
     $params['cookiePolicyNotice'] = $cookiePolicyNotice;
     $params['addBusinessButtonText'] = $addBusinessButtonText;
