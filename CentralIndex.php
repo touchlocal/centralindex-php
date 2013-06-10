@@ -2893,6 +2893,17 @@
 
 
   /**
+   * Get flatpacks that match the supplied masheryid
+   *
+   *  @return - the data from the api
+  */
+  public function getFlatpackBy_masheryid() {
+    $params = array();
+    return CentralIndex::doCurl("GET","/flatpack/by_masheryid",$params);
+  }
+
+
+  /**
    * Remove a flatpack using a supplied flatpack_id
    *
    *  @param flatpack_id - the id of the flatpack to delete
@@ -3058,6 +3069,21 @@
     $params['portal_name'] = $portal_name;
     $params['language'] = $language;
     return CentralIndex::doCurl("GET","/token/message",$params);
+  }
+
+
+  /**
+   * Fetch token for login path
+   *
+   *  @param portal_name - The name of the application that has initiated the login process, example: 'Your Local'
+   *  @param language - The language for the app
+   *  @return - the data from the api
+  */
+  public function getTokenLogin( $portal_name, $language) {
+    $params = array();
+    $params['portal_name'] = $portal_name;
+    $params['language'] = $language;
+    return CentralIndex::doCurl("GET","/token/login",$params);
   }
 
 
