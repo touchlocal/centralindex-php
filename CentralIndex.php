@@ -584,7 +584,6 @@
    * Create a new business entity with all it's objects
    *
    *  @param name
-   *  @param building_number
    *  @param address1
    *  @param address2
    *  @param address3
@@ -604,10 +603,9 @@
    *  @param do_not_display
    *  @return - the data from the api
   */
-  public function putBusiness( $name, $building_number, $address1, $address2, $address3, $district, $town, $county, $postcode, $country, $latitude, $longitude, $timezone, $telephone_number, $email, $website, $category_id, $category_type, $do_not_display) {
+  public function putBusiness( $name, $address1, $address2, $address3, $district, $town, $county, $postcode, $country, $latitude, $longitude, $timezone, $telephone_number, $email, $website, $category_id, $category_type, $do_not_display) {
     $params = array();
     $params['name'] = $name;
-    $params['building_number'] = $building_number;
     $params['address1'] = $address1;
     $params['address2'] = $address2;
     $params['address3'] = $address3;
@@ -1151,7 +1149,6 @@
   /**
    * Supply an address to geocode - returns lat/lon and accuracy
    *
-   *  @param building_number
    *  @param address1
    *  @param address2
    *  @param address3
@@ -1162,9 +1159,8 @@
    *  @param country
    *  @return - the data from the api
   */
-  public function getToolsGeocode( $building_number, $address1, $address2, $address3, $district, $town, $county, $postcode, $country) {
+  public function getToolsGeocode( $address1, $address2, $address3, $district, $town, $county, $postcode, $country) {
     $params = array();
-    $params['building_number'] = $building_number;
     $params['address1'] = $address1;
     $params['address2'] = $address2;
     $params['address3'] = $address3;
@@ -1318,7 +1314,6 @@
    * With a known entity id, an invoice_address object can be updated.
    *
    *  @param entity_id
-   *  @param building_number
    *  @param address1
    *  @param address2
    *  @param address3
@@ -1329,10 +1324,9 @@
    *  @param address_type
    *  @return - the data from the api
   */
-  public function postEntityInvoice_address( $entity_id, $building_number, $address1, $address2, $address3, $district, $town, $county, $postcode, $address_type) {
+  public function postEntityInvoice_address( $entity_id, $address1, $address2, $address3, $district, $town, $county, $postcode, $address_type) {
     $params = array();
     $params['entity_id'] = $entity_id;
-    $params['building_number'] = $building_number;
     $params['address1'] = $address1;
     $params['address2'] = $address2;
     $params['address3'] = $address3;
@@ -1394,7 +1388,6 @@
    * Create/Update a postal address
    *
    *  @param entity_id
-   *  @param building_number
    *  @param address1
    *  @param address2
    *  @param address3
@@ -1406,10 +1399,9 @@
    *  @param do_not_display
    *  @return - the data from the api
   */
-  public function postEntityPostal_address( $entity_id, $building_number, $address1, $address2, $address3, $district, $town, $county, $postcode, $address_type, $do_not_display) {
+  public function postEntityPostal_address( $entity_id, $address1, $address2, $address3, $district, $town, $county, $postcode, $address_type, $do_not_display) {
     $params = array();
     $params['entity_id'] = $entity_id;
-    $params['building_number'] = $building_number;
     $params['address1'] = $address1;
     $params['address2'] = $address2;
     $params['address3'] = $address3;
@@ -3019,14 +3011,12 @@
    *
    *  @param language - The language to use to render the add path e.g. en
    *  @param portal_name - The name of the website that data is to be added on e.g. YourLocal
-   *  @param country - The country of the entity to be added e.g. gb
    *  @return - the data from the api
   */
-  public function getTokenAdd( $language, $portal_name, $country) {
+  public function getTokenAdd( $language, $portal_name) {
     $params = array();
     $params['language'] = $language;
     $params['portal_name'] = $portal_name;
-    $params['country'] = $country;
     return CentralIndex::doCurl("GET","/token/add",$params);
   }
 
@@ -3094,33 +3084,6 @@
     $params['portal_name'] = $portal_name;
     $params['language'] = $language;
     return CentralIndex::doCurl("GET","/token/login",$params);
-  }
-
-
-  /**
-   * Fetch token for update path
-   *
-   *  @param entity_id - The id of the entity being upgraded
-   *  @param portal_name - The name of the application that has initiated the login process, example: 'Your Local'
-   *  @param language - The language for the app
-   *  @param price - The price of the advert in the entities native currency
-   *  @param max_tags - The number of tags attached to the advert
-   *  @param max_locations - The number of locations attached to the advert
-   *  @param contract_length - The number of days from the initial sale date that the contract is valid for
-   *  @param ref_id - The campaign or reference id
-   *  @return - the data from the api
-  */
-  public function getTokenUpgrade( $entity_id, $portal_name, $language, $price, $max_tags, $max_locations, $contract_length, $ref_id) {
-    $params = array();
-    $params['entity_id'] = $entity_id;
-    $params['portal_name'] = $portal_name;
-    $params['language'] = $language;
-    $params['price'] = $price;
-    $params['max_tags'] = $max_tags;
-    $params['max_locations'] = $max_locations;
-    $params['contract_length'] = $contract_length;
-    $params['ref_id'] = $ref_id;
-    return CentralIndex::doCurl("GET","/token/upgrade",$params);
   }
 
 
@@ -3338,23 +3301,6 @@
     $params['entity_id'] = $entity_id;
     $params['gen_id'] = $gen_id;
     return CentralIndex::doCurl("DELETE","/entity/group",$params);
-  }
-
-
-  /**
-   * Add an entityserve document
-   *
-   *  @param entity_id - The id of the entity to create the entityserve event for
-   *  @param country - the ISO code of the country
-   *  @param event_type - The event type being recorded
-   *  @return - the data from the api
-  */
-  public function putEntityserve( $entity_id, $country, $event_type) {
-    $params = array();
-    $params['entity_id'] = $entity_id;
-    $params['country'] = $country;
-    $params['event_type'] = $event_type;
-    return CentralIndex::doCurl("PUT","/entityserve",$params);
   }
 
 
