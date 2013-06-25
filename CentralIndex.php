@@ -346,9 +346,11 @@
    *  @param nokia_country_code
    *  @param twilio_sms
    *  @param twilio_phone
+   *  @param currency_symbol - the symbol of this country's currency
+   *  @param currency_symbol_html - the html version of the symbol of this country's currency
    *  @return - the data from the api
   */
-  public function postCountry( $country_id, $name, $synonyms, $continentName, $continent, $geonameId, $dbpediaURL, $freebaseURL, $population, $currencyCode, $languages, $areaInSqKm, $capital, $east, $west, $north, $south, $claimPrice, $claimMethods, $nokia_country_code, $twilio_sms, $twilio_phone) {
+  public function postCountry( $country_id, $name, $synonyms, $continentName, $continent, $geonameId, $dbpediaURL, $freebaseURL, $population, $currencyCode, $languages, $areaInSqKm, $capital, $east, $west, $north, $south, $claimPrice, $claimMethods, $nokia_country_code, $twilio_sms, $twilio_phone, $currency_symbol, $currency_symbol_html) {
     $params = array();
     $params['country_id'] = $country_id;
     $params['name'] = $name;
@@ -372,6 +374,8 @@
     $params['nokia_country_code'] = $nokia_country_code;
     $params['twilio_sms'] = $twilio_sms;
     $params['twilio_phone'] = $twilio_phone;
+    $params['currency_symbol'] = $currency_symbol;
+    $params['currency_symbol_html'] = $currency_symbol_html;
     return CentralIndex::doCurl("POST","/country",$params);
   }
 
@@ -3213,9 +3217,11 @@
    *  @param api_url
    *  @param api_params
    *  @param active
+   *  @param reseller_masheryid
+   *  @param description
    *  @return - the data from the api
   */
-  public function postTraction( $traction_id, $trigger_type, $action_type, $country, $email_addresses, $title, $body, $api_method, $api_url, $api_params, $active) {
+  public function postTraction( $traction_id, $trigger_type, $action_type, $country, $email_addresses, $title, $body, $api_method, $api_url, $api_params, $active, $reseller_masheryid, $description) {
     $params = array();
     $params['traction_id'] = $traction_id;
     $params['trigger_type'] = $trigger_type;
@@ -3228,6 +3234,8 @@
     $params['api_url'] = $api_url;
     $params['api_params'] = $api_params;
     $params['active'] = $active;
+    $params['reseller_masheryid'] = $reseller_masheryid;
+    $params['description'] = $description;
     return CentralIndex::doCurl("POST","/traction",$params);
   }
 
