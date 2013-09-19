@@ -2934,11 +2934,13 @@
    * Perform the whole PTB process on the supplied entity
    *
    *  @param entity_id
+   *  @param destructive
    *  @return - the data from the api
   */
-  public function getPtbAll( $entity_id) {
+  public function getPtbAll( $entity_id, $destructive) {
     $params = array();
     $params['entity_id'] = $entity_id;
+    $params['destructive'] = $destructive;
     return CentralIndex::doCurl("GET","/ptb/all",$params);
   }
 
@@ -2965,12 +2967,14 @@
    *
    *  @param entity_id
    *  @param module
+   *  @param destructive
    *  @return - the data from the api
   */
-  public function getPtbModule( $entity_id, $module) {
+  public function getPtbModule( $entity_id, $module, $destructive) {
     $params = array();
     $params['entity_id'] = $entity_id;
     $params['module'] = $module;
+    $params['destructive'] = $destructive;
     return CentralIndex::doCurl("GET","/ptb/module",$params);
   }
 
