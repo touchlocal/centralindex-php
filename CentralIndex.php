@@ -2522,12 +2522,14 @@
    *
    *  @param from_date
    *  @param to_date
+   *  @param country_id
    *  @return - the data from the api
   */
-  public function getHeartbeatBy_date( $from_date, $to_date) {
+  public function getHeartbeatBy_date( $from_date, $to_date, $country_id) {
     $params = array();
     $params['from_date'] = $from_date;
     $params['to_date'] = $to_date;
+    $params['country_id'] = $country_id;
     return CentralIndex::doCurl("GET","/heartbeat/by_date",$params);
   }
 
