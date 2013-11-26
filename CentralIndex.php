@@ -116,7 +116,7 @@
    *
    *  @param entity_id - The entity to pull
    *  @param entity_name - The entity name this entry refers to
-   *  @param type - The activity type
+   *  @param type - The activity type. add, claim, special offer, image, video, description, testimonial
    *  @param country - The country for the activity
    *  @param longitude - The longitude for teh activity
    *  @param latitude - The latitude for teh activity
@@ -512,7 +512,6 @@
    *  @param south
    *  @param claimPrice
    *  @param claimMethods
-   *  @param nokia_country_code
    *  @param twilio_sms
    *  @param twilio_phone
    *  @param twilio_voice
@@ -526,7 +525,7 @@
    *  @param iso_3166_numeric
    *  @return - the data from the api
   */
-  public function postCountry( $country_id, $name, $synonyms, $continentName, $continent, $geonameId, $dbpediaURL, $freebaseURL, $population, $currencyCode, $languages, $areaInSqKm, $capital, $east, $west, $north, $south, $claimPrice, $claimMethods, $nokia_country_code, $twilio_sms, $twilio_phone, $twilio_voice, $currency_symbol, $currency_symbol_html, $postcodeLookupActive, $addressFields, $addressMatching, $dateFormat, $iso_3166_alpha_3, $iso_3166_numeric) {
+  public function postCountry( $country_id, $name, $synonyms, $continentName, $continent, $geonameId, $dbpediaURL, $freebaseURL, $population, $currencyCode, $languages, $areaInSqKm, $capital, $east, $west, $north, $south, $claimPrice, $claimMethods, $twilio_sms, $twilio_phone, $twilio_voice, $currency_symbol, $currency_symbol_html, $postcodeLookupActive, $addressFields, $addressMatching, $dateFormat, $iso_3166_alpha_3, $iso_3166_numeric) {
     $params = array();
     $params['country_id'] = $country_id;
     $params['name'] = $name;
@@ -547,7 +546,6 @@
     $params['south'] = $south;
     $params['claimPrice'] = $claimPrice;
     $params['claimMethods'] = $claimMethods;
-    $params['nokia_country_code'] = $nokia_country_code;
     $params['twilio_sms'] = $twilio_sms;
     $params['twilio_phone'] = $twilio_phone;
     $params['twilio_voice'] = $twilio_voice;
@@ -3398,15 +3396,19 @@
    *  @param gen_id - The gen_id for the item being reported
    *  @param signal_type - The signal that is to be reported e.g. wrong
    *  @param data_type - The type of data being reported
+   *  @param inactive_reason - The reason for making the entity inactive
+   *  @param inactive_description - A description to accompany the inactive reasoning
    *  @return - the data from the api
   */
-  public function postSignal( $entity_id, $country, $gen_id, $signal_type, $data_type) {
+  public function postSignal( $entity_id, $country, $gen_id, $signal_type, $data_type, $inactive_reason, $inactive_description) {
     $params = array();
     $params['entity_id'] = $entity_id;
     $params['country'] = $country;
     $params['gen_id'] = $gen_id;
     $params['signal_type'] = $signal_type;
     $params['data_type'] = $data_type;
+    $params['inactive_reason'] = $inactive_reason;
+    $params['inactive_description'] = $inactive_description;
     return CentralIndex::doCurl("POST","/signal",$params);
   }
 
