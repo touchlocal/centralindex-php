@@ -89,16 +89,17 @@
   /**
    * Get the activity from the collection
    *
-   *  @param type - The activity type
+   *  @param type - The activity type: add, claim, special offer, image, video, description, testimonial
    *  @param country - The country to filter by
    *  @param latitude_1 - The latitude_1 to filter by
    *  @param longitude_1 - The longitude_1 to filter by
    *  @param latitude_2 - The latitude_2 to filter by
    *  @param longitude_2 - The longitude_2 to filter by
    *  @param number_results - The number_results to filter by
+   *  @param unique_action - Return only the most recent instance of this action?
    *  @return - the data from the api
   */
-  public function getActivity_stream( $type, $country, $latitude_1, $longitude_1, $latitude_2, $longitude_2, $number_results) {
+  public function getActivity_stream( $type, $country, $latitude_1, $longitude_1, $latitude_2, $longitude_2, $number_results, $unique_action) {
     $params = array();
     $params['type'] = $type;
     $params['country'] = $country;
@@ -107,6 +108,7 @@
     $params['latitude_2'] = $latitude_2;
     $params['longitude_2'] = $longitude_2;
     $params['number_results'] = $number_results;
+    $params['unique_action'] = $unique_action;
     return CentralIndex::doCurl("GET","/activity_stream",$params);
   }
 
@@ -116,7 +118,7 @@
    *
    *  @param entity_id - The entity to pull
    *  @param entity_name - The entity name this entry refers to
-   *  @param type - The activity type. add, claim, special offer, image, video, description, testimonial
+   *  @param type - The activity type.
    *  @param country - The country for the activity
    *  @param longitude - The longitude for teh activity
    *  @param latitude - The latitude for teh activity
@@ -2265,9 +2267,10 @@
    *  @param denyIndexing - Whether to noindex a flatpack
    *  @param contextRadius - allows you to set a catchment area around the contextLocationId in miles for use when displaying the activity stream module
    *  @param activityStream - allows you to set the activity to be displayed in the activity stream
+   *  @param activityStreamSize - Sets the number of items to show within the activity stream.
    *  @return - the data from the api
   */
-  public function postFlatpack( $flatpack_id, $domainName, $stub, $flatpackName, $less, $language, $country, $mapsType, $mapKey, $searchFormShowOn, $searchFormShowKeywordsBox, $searchFormShowLocationBox, $searchFormKeywordsAutoComplete, $searchFormLocationsAutoComplete, $searchFormDefaultLocation, $searchFormPlaceholderKeywords, $searchFormPlaceholderLocation, $searchFormKeywordsLabel, $searchFormLocationLabel, $cannedLinksHeader, $homepageTitle, $homepageDescription, $homepageIntroTitle, $homepageIntroText, $head, $adblock, $bodyTop, $bodyBottom, $header_menu, $header_menu_bottom, $footer_menu, $bdpTitle, $bdpDescription, $bdpAds, $serpTitle, $serpDescription, $serpNumberResults, $serpNumberAdverts, $serpAds, $serpTitleNoWhat, $serpDescriptionNoWhat, $cookiePolicyUrl, $cookiePolicyNotice, $addBusinessButtonText, $twitterUrl, $facebookUrl, $copyright, $advertUpgradeActive, $advertUpgradePrice, $advertUpgradeMaxTags, $advertUpgradeMaxLocations, $advertUpgradeContractLength, $advertUpgradeRefId, $phoneReveal, $loginLinkText, $contextLocationId, $addBusinessButtonPosition, $denyIndexing, $contextRadius, $activityStream) {
+  public function postFlatpack( $flatpack_id, $domainName, $stub, $flatpackName, $less, $language, $country, $mapsType, $mapKey, $searchFormShowOn, $searchFormShowKeywordsBox, $searchFormShowLocationBox, $searchFormKeywordsAutoComplete, $searchFormLocationsAutoComplete, $searchFormDefaultLocation, $searchFormPlaceholderKeywords, $searchFormPlaceholderLocation, $searchFormKeywordsLabel, $searchFormLocationLabel, $cannedLinksHeader, $homepageTitle, $homepageDescription, $homepageIntroTitle, $homepageIntroText, $head, $adblock, $bodyTop, $bodyBottom, $header_menu, $header_menu_bottom, $footer_menu, $bdpTitle, $bdpDescription, $bdpAds, $serpTitle, $serpDescription, $serpNumberResults, $serpNumberAdverts, $serpAds, $serpTitleNoWhat, $serpDescriptionNoWhat, $cookiePolicyUrl, $cookiePolicyNotice, $addBusinessButtonText, $twitterUrl, $facebookUrl, $copyright, $advertUpgradeActive, $advertUpgradePrice, $advertUpgradeMaxTags, $advertUpgradeMaxLocations, $advertUpgradeContractLength, $advertUpgradeRefId, $phoneReveal, $loginLinkText, $contextLocationId, $addBusinessButtonPosition, $denyIndexing, $contextRadius, $activityStream, $activityStreamSize) {
     $params = array();
     $params['flatpack_id'] = $flatpack_id;
     $params['domainName'] = $domainName;
@@ -2329,6 +2332,7 @@
     $params['denyIndexing'] = $denyIndexing;
     $params['contextRadius'] = $contextRadius;
     $params['activityStream'] = $activityStream;
+    $params['activityStreamSize'] = $activityStreamSize;
     return CentralIndex::doCurl("POST","/flatpack",$params);
   }
 
