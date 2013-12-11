@@ -3471,10 +3471,9 @@
    *  @param seed_masheryid
    *  @param supplier_masheryid
    *  @param country
-   *  @param reseller_masheryid
    *  @return - the data from the api
   */
-  public function postSyndicationCreate( $syndication_type, $publisher_id, $expiry_date, $entity_id, $group_id, $seed_masheryid, $supplier_masheryid, $country, $reseller_masheryid) {
+  public function postSyndicationCreate( $syndication_type, $publisher_id, $expiry_date, $entity_id, $group_id, $seed_masheryid, $supplier_masheryid, $country) {
     $params = array();
     $params['syndication_type'] = $syndication_type;
     $params['publisher_id'] = $publisher_id;
@@ -3484,7 +3483,6 @@
     $params['seed_masheryid'] = $seed_masheryid;
     $params['supplier_masheryid'] = $supplier_masheryid;
     $params['country'] = $country;
-    $params['reseller_masheryid'] = $reseller_masheryid;
     return CentralIndex::doCurl("POST","/syndication/create",$params);
   }
 
