@@ -1367,13 +1367,15 @@
    *  @param entity_id
    *  @param headline
    *  @param body
+   *  @param gen_id
    *  @return - the data from the api
   */
-  public function postEntityDescription( $entity_id, $headline, $body) {
+  public function postEntityDescription( $entity_id, $headline, $body, $gen_id) {
     $params = array();
     $params['entity_id'] = $entity_id;
     $params['headline'] = $headline;
     $params['body'] = $body;
+    $params['gen_id'] = $gen_id;
     return CentralIndex::doCurl("POST","/entity/description",$params);
   }
 
@@ -2457,14 +2459,16 @@
    *  @param website_url
    *  @param display_url
    *  @param website_description
+   *  @param gen_id
    *  @return - the data from the api
   */
-  public function postEntityWebsite( $entity_id, $website_url, $display_url, $website_description) {
+  public function postEntityWebsite( $entity_id, $website_url, $display_url, $website_description, $gen_id) {
     $params = array();
     $params['entity_id'] = $entity_id;
     $params['website_url'] = $website_url;
     $params['display_url'] = $display_url;
     $params['website_description'] = $website_description;
+    $params['gen_id'] = $gen_id;
     return CentralIndex::doCurl("POST","/entity/website",$params);
   }
 
