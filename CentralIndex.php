@@ -3779,15 +3779,17 @@
    *  @param name
    *  @param description
    *  @param active
+   *  @param products
    *  @return - the data from the api
   */
-  public function postReseller( $reseller_id, $country, $name, $description, $active) {
+  public function postReseller( $reseller_id, $country, $name, $description, $active, $products) {
     $params = array();
     $params['reseller_id'] = $reseller_id;
     $params['country'] = $country;
     $params['name'] = $name;
     $params['description'] = $description;
     $params['active'] = $active;
+    $params['products'] = $products;
     return CentralIndex::doCurl("POST","/reseller",$params);
   }
 
@@ -4348,9 +4350,10 @@
    *  @param province
    *  @param postcode
    *  @param country
+   *  @param geocoder
    *  @return - the data from the api
   */
-  public function getToolsGeocode( $building_number, $address1, $address2, $address3, $district, $town, $county, $province, $postcode, $country) {
+  public function getToolsGeocode( $building_number, $address1, $address2, $address3, $district, $town, $county, $province, $postcode, $country, $geocoder) {
     $params = array();
     $params['building_number'] = $building_number;
     $params['address1'] = $address1;
@@ -4362,6 +4365,7 @@
     $params['province'] = $province;
     $params['postcode'] = $postcode;
     $params['country'] = $country;
+    $params['geocoder'] = $geocoder;
     return CentralIndex::doCurl("GET","/tools/geocode",$params);
   }
 
