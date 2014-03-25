@@ -4114,11 +4114,15 @@
    * Get all syndication log entries for a given entity id
    *
    *  @param entity_id
+   *  @param page
+   *  @param per_page
    *  @return - the data from the api
   */
-  public function getSyndication_logBy_entity_id( $entity_id) {
+  public function getSyndication_logBy_entity_id( $entity_id, $page, $per_page) {
     $params = array();
     $params['entity_id'] = $entity_id;
+    $params['page'] = $page;
+    $params['per_page'] = $per_page;
     return CentralIndex::doCurl("GET","/syndication_log/by_entity_id",$params);
   }
 
