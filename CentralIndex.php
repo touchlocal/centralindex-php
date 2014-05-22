@@ -3567,9 +3567,13 @@
    *  @param searchDescriptionNoWhere - Description of serps page when no where is specified
    *  @param searchIntroHeader - Introductory header
    *  @param searchIntroText - Introductory text
+   *  @param cookiePolicyShow - whether to show cookie policy
+   *  @param cookiePolicyUrl - url of cookie policy
+   *  @param twitterUrl - url of twitter feed
+   *  @param facebookUrl - url of facebook feed
    *  @return - the data from the api
   */
-  public function postMultipack( $multipack_id, $group_id, $domainName, $multipackName, $less, $country, $menuTop, $menuBottom, $language, $menuFooter, $searchNumberResults, $searchTitle, $searchDescription, $searchTitleNoWhere, $searchDescriptionNoWhere, $searchIntroHeader, $searchIntroText) {
+  public function postMultipack( $multipack_id, $group_id, $domainName, $multipackName, $less, $country, $menuTop, $menuBottom, $language, $menuFooter, $searchNumberResults, $searchTitle, $searchDescription, $searchTitleNoWhere, $searchDescriptionNoWhere, $searchIntroHeader, $searchIntroText, $cookiePolicyShow, $cookiePolicyUrl, $twitterUrl, $facebookUrl) {
     $params = array();
     $params['multipack_id'] = $multipack_id;
     $params['group_id'] = $group_id;
@@ -3588,6 +3592,10 @@
     $params['searchDescriptionNoWhere'] = $searchDescriptionNoWhere;
     $params['searchIntroHeader'] = $searchIntroHeader;
     $params['searchIntroText'] = $searchIntroText;
+    $params['cookiePolicyShow'] = $cookiePolicyShow;
+    $params['cookiePolicyUrl'] = $cookiePolicyUrl;
+    $params['twitterUrl'] = $twitterUrl;
+    $params['facebookUrl'] = $facebookUrl;
     return CentralIndex::doCurl("POST","/multipack",$params);
   }
 
