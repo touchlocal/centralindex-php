@@ -3633,12 +3633,16 @@
    *
    *  @param multipack_id - the unique id to search for
    *  @param filedata
+   *  @param mapPinOffsetX
+   *  @param mapPinOffsetY
    *  @return - the data from the api
   */
-  public function postMultipackMap_pin( $multipack_id, $filedata) {
+  public function postMultipackMap_pin( $multipack_id, $filedata, $mapPinOffsetX, $mapPinOffsetY) {
     $params = array();
     $params['multipack_id'] = $multipack_id;
     $params['filedata'] = $filedata;
+    $params['mapPinOffsetX'] = $mapPinOffsetX;
+    $params['mapPinOffsetY'] = $mapPinOffsetY;
     return CentralIndex::doCurl("POST","/multipack/map_pin",$params);
   }
 
@@ -5671,11 +5675,13 @@
    * Downgrade an existing user
    *
    *  @param user_id
+   *  @param user_type
    *  @return - the data from the api
   */
-  public function postUserDowngrade( $user_id) {
+  public function postUserDowngrade( $user_id, $user_type) {
     $params = array();
     $params['user_id'] = $user_id;
+    $params['user_type'] = $user_type;
     return CentralIndex::doCurl("POST","/user/downgrade",$params);
   }
 
