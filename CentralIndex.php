@@ -561,9 +561,12 @@
    *  @param source
    *  @param channel
    *  @param campaign
+   *  @param referrer_domain
+   *  @param referrer_name
+   *  @param flatpack_id
    *  @return - the data from the api
   */
-  public function postContractCreate( $entity_id, $user_id, $payment_provider, $basket, $billing_period, $source, $channel, $campaign) {
+  public function postContractCreate( $entity_id, $user_id, $payment_provider, $basket, $billing_period, $source, $channel, $campaign, $referrer_domain, $referrer_name, $flatpack_id) {
     $params = array();
     $params['entity_id'] = $entity_id;
     $params['user_id'] = $user_id;
@@ -573,6 +576,9 @@
     $params['source'] = $source;
     $params['channel'] = $channel;
     $params['campaign'] = $campaign;
+    $params['referrer_domain'] = $referrer_domain;
+    $params['referrer_name'] = $referrer_name;
+    $params['flatpack_id'] = $flatpack_id;
     return CentralIndex::doCurl("POST","/contract/create",$params);
   }
 
@@ -3567,13 +3573,14 @@
    *  @param searchDescriptionNoWhere - Description of serps page when no where is specified
    *  @param searchIntroHeader - Introductory header
    *  @param searchIntroText - Introductory text
+   *  @param searchShowAll - display all search results on one page
    *  @param cookiePolicyShow - whether to show cookie policy
    *  @param cookiePolicyUrl - url of cookie policy
    *  @param twitterUrl - url of twitter feed
    *  @param facebookUrl - url of facebook feed
    *  @return - the data from the api
   */
-  public function postMultipack( $multipack_id, $group_id, $domainName, $multipackName, $less, $country, $menuTop, $menuBottom, $language, $menuFooter, $searchNumberResults, $searchTitle, $searchDescription, $searchTitleNoWhere, $searchDescriptionNoWhere, $searchIntroHeader, $searchIntroText, $cookiePolicyShow, $cookiePolicyUrl, $twitterUrl, $facebookUrl) {
+  public function postMultipack( $multipack_id, $group_id, $domainName, $multipackName, $less, $country, $menuTop, $menuBottom, $language, $menuFooter, $searchNumberResults, $searchTitle, $searchDescription, $searchTitleNoWhere, $searchDescriptionNoWhere, $searchIntroHeader, $searchIntroText, $searchShowAll, $cookiePolicyShow, $cookiePolicyUrl, $twitterUrl, $facebookUrl) {
     $params = array();
     $params['multipack_id'] = $multipack_id;
     $params['group_id'] = $group_id;
@@ -3592,6 +3599,7 @@
     $params['searchDescriptionNoWhere'] = $searchDescriptionNoWhere;
     $params['searchIntroHeader'] = $searchIntroHeader;
     $params['searchIntroText'] = $searchIntroText;
+    $params['searchShowAll'] = $searchShowAll;
     $params['cookiePolicyShow'] = $cookiePolicyShow;
     $params['cookiePolicyUrl'] = $cookiePolicyUrl;
     $params['twitterUrl'] = $twitterUrl;
