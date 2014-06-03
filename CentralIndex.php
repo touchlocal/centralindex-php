@@ -685,19 +685,6 @@
 
 
   /**
-   * Get the contract log from the ID supplied
-   *
-   *  @param contract_log_id
-   *  @return - the data from the api
-  */
-  public function getContract_log( $contract_log_id) {
-    $params = array();
-    $params['contract_log_id'] = $contract_log_id;
-    return CentralIndex::doCurl("GET","/contract_log",$params);
-  }
-
-
-  /**
    * Creates a new contract log for a given contract
    *
    *  @param contract_id
@@ -719,6 +706,19 @@
     $params['amount'] = $amount;
     $params['currency'] = $currency;
     return CentralIndex::doCurl("POST","/contract_log",$params);
+  }
+
+
+  /**
+   * Get the contract log from the ID supplied
+   *
+   *  @param contract_log_id
+   *  @return - the data from the api
+  */
+  public function getContract_log( $contract_log_id) {
+    $params = array();
+    $params['contract_log_id'] = $contract_log_id;
+    return CentralIndex::doCurl("GET","/contract_log",$params);
   }
 
 
@@ -920,11 +920,15 @@
    * Allows a whole entity to be pulled from the datastore by its unique id
    *
    *  @param entity_id - The unique entity ID e.g. 379236608286720
+   *  @param domain
+   *  @param path
    *  @return - the data from the api
   */
-  public function getEntity( $entity_id) {
+  public function getEntity( $entity_id, $domain, $path) {
     $params = array();
     $params['entity_id'] = $entity_id;
+    $params['domain'] = $domain;
+    $params['path'] = $path;
     return CentralIndex::doCurl("GET","/entity",$params);
   }
 
@@ -1423,21 +1427,6 @@
 
 
   /**
-   * Allows a phone object to be reduced in confidence
-   *
-   *  @param entity_id
-   *  @param gen_id
-   *  @return - the data from the api
-  */
-  public function deleteEntityDocument( $entity_id, $gen_id) {
-    $params = array();
-    $params['entity_id'] = $entity_id;
-    $params['gen_id'] = $gen_id;
-    return CentralIndex::doCurl("DELETE","/entity/document",$params);
-  }
-
-
-  /**
    * With a known entity id, an document object can be added.
    *
    *  @param entity_id
@@ -1451,6 +1440,21 @@
     $params['name'] = $name;
     $params['filedata'] = $filedata;
     return CentralIndex::doCurl("POST","/entity/document",$params);
+  }
+
+
+  /**
+   * Allows a phone object to be reduced in confidence
+   *
+   *  @param entity_id
+   *  @param gen_id
+   *  @return - the data from the api
+  */
+  public function deleteEntityDocument( $entity_id, $gen_id) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['gen_id'] = $gen_id;
+    return CentralIndex::doCurl("DELETE","/entity/document",$params);
   }
 
 
@@ -1487,6 +1491,21 @@
 
 
   /**
+   * Allows an employee object to be reduced in confidence
+   *
+   *  @param entity_id
+   *  @param gen_id
+   *  @return - the data from the api
+  */
+  public function deleteEntityEmployee( $entity_id, $gen_id) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['gen_id'] = $gen_id;
+    return CentralIndex::doCurl("DELETE","/entity/employee",$params);
+  }
+
+
+  /**
    * With a known entity id, an employee object can be added.
    *
    *  @param entity_id
@@ -1510,21 +1529,6 @@
     $params['email'] = $email;
     $params['phone_number'] = $phone_number;
     return CentralIndex::doCurl("POST","/entity/employee",$params);
-  }
-
-
-  /**
-   * Allows an employee object to be reduced in confidence
-   *
-   *  @param entity_id
-   *  @param gen_id
-   *  @return - the data from the api
-  */
-  public function deleteEntityEmployee( $entity_id, $gen_id) {
-    $params = array();
-    $params['entity_id'] = $entity_id;
-    $params['gen_id'] = $gen_id;
-    return CentralIndex::doCurl("DELETE","/entity/employee",$params);
   }
 
 
@@ -1610,6 +1614,21 @@
 
 
   /**
+   * Allows a image object to be reduced in confidence
+   *
+   *  @param entity_id
+   *  @param gen_id
+   *  @return - the data from the api
+  */
+  public function deleteEntityImage( $entity_id, $gen_id) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['gen_id'] = $gen_id;
+    return CentralIndex::doCurl("DELETE","/entity/image",$params);
+  }
+
+
+  /**
    * With a known entity id, a image object can be added.
    *
    *  @param entity_id
@@ -1623,21 +1642,6 @@
     $params['filedata'] = $filedata;
     $params['image_name'] = $image_name;
     return CentralIndex::doCurl("POST","/entity/image",$params);
-  }
-
-
-  /**
-   * Allows a image object to be reduced in confidence
-   *
-   *  @param entity_id
-   *  @param gen_id
-   *  @return - the data from the api
-  */
-  public function deleteEntityImage( $entity_id, $gen_id) {
-    $params = array();
-    $params['entity_id'] = $entity_id;
-    $params['gen_id'] = $gen_id;
-    return CentralIndex::doCurl("DELETE","/entity/image",$params);
   }
 
 
@@ -1705,6 +1709,21 @@
 
 
   /**
+   * Allows a list description object to be reduced in confidence
+   *
+   *  @param gen_id
+   *  @param entity_id
+   *  @return - the data from the api
+  */
+  public function deleteEntityList( $gen_id, $entity_id) {
+    $params = array();
+    $params['gen_id'] = $gen_id;
+    $params['entity_id'] = $entity_id;
+    return CentralIndex::doCurl("DELETE","/entity/list",$params);
+  }
+
+
+  /**
    * With a known entity id, a list description object can be added.
    *
    *  @param entity_id
@@ -1718,21 +1737,6 @@
     $params['headline'] = $headline;
     $params['body'] = $body;
     return CentralIndex::doCurl("POST","/entity/list",$params);
-  }
-
-
-  /**
-   * Allows a list description object to be reduced in confidence
-   *
-   *  @param gen_id
-   *  @param entity_id
-   *  @return - the data from the api
-  */
-  public function deleteEntityList( $gen_id, $entity_id) {
-    $params = array();
-    $params['gen_id'] = $gen_id;
-    $params['entity_id'] = $entity_id;
-    return CentralIndex::doCurl("DELETE","/entity/list",$params);
   }
 
 
@@ -1862,6 +1866,19 @@
 
 
   /**
+   * With a known entity id, a opening times object can be removed.
+   *
+   *  @param entity_id - The id of the entity to edit
+   *  @return - the data from the api
+  */
+  public function deleteEntityOpening_times( $entity_id) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    return CentralIndex::doCurl("DELETE","/entity/opening_times",$params);
+  }
+
+
+  /**
    * With a known entity id, a opening times object can be added. Each day can be either 'closed' to indicate that the entity is closed that day, '24hour' to indicate that the entity is open all day or single/split time ranges can be supplied in 4-digit 24-hour format, such as '09001730' or '09001200,13001700' to indicate hours of opening.
    *
    *  @param entity_id - The id of the entity to edit
@@ -1889,19 +1906,6 @@
     $params['closed'] = $closed;
     $params['closed_public_holidays'] = $closed_public_holidays;
     return CentralIndex::doCurl("POST","/entity/opening_times",$params);
-  }
-
-
-  /**
-   * With a known entity id, a opening times object can be removed.
-   *
-   *  @param entity_id - The id of the entity to edit
-   *  @return - the data from the api
-  */
-  public function deleteEntityOpening_times( $entity_id) {
-    $params = array();
-    $params['entity_id'] = $entity_id;
-    return CentralIndex::doCurl("DELETE","/entity/opening_times",$params);
   }
 
 
@@ -2054,9 +2058,11 @@
    *  @param page
    *  @param country
    *  @param language
+   *  @param domain
+   *  @param path
    *  @return - the data from the api
   */
-  public function getEntitySearchByboundingbox( $latitude_1, $longitude_1, $latitude_2, $longitude_2, $per_page, $page, $country, $language) {
+  public function getEntitySearchByboundingbox( $latitude_1, $longitude_1, $latitude_2, $longitude_2, $per_page, $page, $country, $language, $domain, $path) {
     $params = array();
     $params['latitude_1'] = $latitude_1;
     $params['longitude_1'] = $longitude_1;
@@ -2066,6 +2072,8 @@
     $params['page'] = $page;
     $params['country'] = $country;
     $params['language'] = $language;
+    $params['domain'] = $domain;
+    $params['path'] = $path;
     return CentralIndex::doCurl("GET","/entity/search/byboundingbox",$params);
   }
 
@@ -2080,9 +2088,11 @@
    *  @param language - An ISO compatible language code, E.g. en
    *  @param latitude - The decimal latitude of the search context (optional)
    *  @param longitude - The decimal longitude of the search context (optional)
+   *  @param domain
+   *  @param path
    *  @return - the data from the api
   */
-  public function getEntitySearchBylocation( $where, $per_page, $page, $country, $language, $latitude, $longitude) {
+  public function getEntitySearchBylocation( $where, $per_page, $page, $country, $language, $latitude, $longitude, $domain, $path) {
     $params = array();
     $params['where'] = $where;
     $params['per_page'] = $per_page;
@@ -2091,6 +2101,8 @@
     $params['language'] = $language;
     $params['latitude'] = $latitude;
     $params['longitude'] = $longitude;
+    $params['domain'] = $domain;
+    $params['path'] = $path;
     return CentralIndex::doCurl("GET","/entity/search/bylocation",$params);
   }
 
@@ -2106,9 +2118,11 @@
    *  @param language - An ISO compatible language code, E.g. en
    *  @param latitude - The decimal latitude of the centre point of the search context
    *  @param longitude - The decimal longitude of the centre point of the search context
+   *  @param domain
+   *  @param path
    *  @return - the data from the api
   */
-  public function getEntitySearchGroupBylocation( $group_id, $where, $country, $per_page, $page, $language, $latitude, $longitude) {
+  public function getEntitySearchGroupBylocation( $group_id, $where, $country, $per_page, $page, $language, $latitude, $longitude, $domain, $path) {
     $params = array();
     $params['group_id'] = $group_id;
     $params['where'] = $where;
@@ -2118,6 +2132,8 @@
     $params['language'] = $language;
     $params['latitude'] = $latitude;
     $params['longitude'] = $longitude;
+    $params['domain'] = $domain;
+    $params['path'] = $path;
     return CentralIndex::doCurl("GET","/entity/search/group/bylocation",$params);
   }
 
@@ -2132,9 +2148,11 @@
    *  @param language - An ISO compatible language code, E.g. en
    *  @param latitude - The decimal latitude of the centre point of the search
    *  @param longitude - The decimal longitude of the centre point of the search
+   *  @param domain
+   *  @param path
    *  @return - the data from the api
   */
-  public function getEntitySearchGroupBynearest( $group_id, $country, $per_page, $page, $language, $latitude, $longitude) {
+  public function getEntitySearchGroupBynearest( $group_id, $country, $per_page, $page, $language, $latitude, $longitude, $domain, $path) {
     $params = array();
     $params['group_id'] = $group_id;
     $params['country'] = $country;
@@ -2143,7 +2161,38 @@
     $params['language'] = $language;
     $params['latitude'] = $latitude;
     $params['longitude'] = $longitude;
+    $params['domain'] = $domain;
+    $params['path'] = $path;
     return CentralIndex::doCurl("GET","/entity/search/group/bynearest",$params);
+  }
+
+
+  /**
+   * Search for entities matching the supplied 'who', ordered by nearness
+   *
+   *  @param keyword - What to get results for. E.g. cafe e.g. cafe
+   *  @param country - The country to fetch results for e.g. gb
+   *  @param per_page - Number of results returned per page
+   *  @param page - Which page number to retrieve
+   *  @param language - An ISO compatible language code, E.g. en
+   *  @param latitude - The decimal latitude of the centre point of the search
+   *  @param longitude - The decimal longitude of the centre point of the search
+   *  @param domain
+   *  @param path
+   *  @return - the data from the api
+  */
+  public function getEntitySearchKeywordBynearest( $keyword, $country, $per_page, $page, $language, $latitude, $longitude, $domain, $path) {
+    $params = array();
+    $params['keyword'] = $keyword;
+    $params['country'] = $country;
+    $params['per_page'] = $per_page;
+    $params['page'] = $page;
+    $params['language'] = $language;
+    $params['latitude'] = $latitude;
+    $params['longitude'] = $longitude;
+    $params['domain'] = $domain;
+    $params['path'] = $path;
+    return CentralIndex::doCurl("GET","/entity/search/keyword/bynearest",$params);
   }
 
 
@@ -2155,15 +2204,19 @@
    *  @param page - The page number to retrieve
    *  @param country - Which country to return results for. An ISO compatible country code, E.g. ie e.g. ie
    *  @param language - An ISO compatible language code, E.g. en
+   *  @param domain
+   *  @param path
    *  @return - the data from the api
   */
-  public function getEntitySearchWhat( $what, $per_page, $page, $country, $language) {
+  public function getEntitySearchWhat( $what, $per_page, $page, $country, $language, $domain, $path) {
     $params = array();
     $params['what'] = $what;
     $params['per_page'] = $per_page;
     $params['page'] = $page;
     $params['country'] = $country;
     $params['language'] = $language;
+    $params['domain'] = $domain;
+    $params['path'] = $path;
     return CentralIndex::doCurl("GET","/entity/search/what",$params);
   }
 
@@ -2180,9 +2233,11 @@
    *  @param page
    *  @param country - A valid ISO 3166 country code e.g. ie
    *  @param language
+   *  @param domain
+   *  @param path
    *  @return - the data from the api
   */
-  public function getEntitySearchWhatByboundingbox( $what, $latitude_1, $longitude_1, $latitude_2, $longitude_2, $per_page, $page, $country, $language) {
+  public function getEntitySearchWhatByboundingbox( $what, $latitude_1, $longitude_1, $latitude_2, $longitude_2, $per_page, $page, $country, $language, $domain, $path) {
     $params = array();
     $params['what'] = $what;
     $params['latitude_1'] = $latitude_1;
@@ -2193,6 +2248,8 @@
     $params['page'] = $page;
     $params['country'] = $country;
     $params['language'] = $language;
+    $params['domain'] = $domain;
+    $params['path'] = $path;
     return CentralIndex::doCurl("GET","/entity/search/what/byboundingbox",$params);
   }
 
@@ -2208,9 +2265,11 @@
    *  @param language - An ISO compatible language code, E.g. en
    *  @param latitude - The decimal latitude of the search context (optional)
    *  @param longitude - The decimal longitude of the search context (optional)
+   *  @param domain
+   *  @param path
    *  @return - the data from the api
   */
-  public function getEntitySearchWhatBylocation( $what, $where, $per_page, $page, $country, $language, $latitude, $longitude) {
+  public function getEntitySearchWhatBylocation( $what, $where, $per_page, $page, $country, $language, $latitude, $longitude, $domain, $path) {
     $params = array();
     $params['what'] = $what;
     $params['where'] = $where;
@@ -2220,6 +2279,8 @@
     $params['language'] = $language;
     $params['latitude'] = $latitude;
     $params['longitude'] = $longitude;
+    $params['domain'] = $domain;
+    $params['path'] = $path;
     return CentralIndex::doCurl("GET","/entity/search/what/bylocation",$params);
   }
 
@@ -2234,9 +2295,11 @@
    *  @param language - An ISO compatible language code, E.g. en
    *  @param latitude - The decimal latitude of the centre point of the search
    *  @param longitude - The decimal longitude of the centre point of the search
+   *  @param domain
+   *  @param path
    *  @return - the data from the api
   */
-  public function getEntitySearchWhatBynearest( $what, $country, $per_page, $page, $language, $latitude, $longitude) {
+  public function getEntitySearchWhatBynearest( $what, $country, $per_page, $page, $language, $latitude, $longitude, $domain, $path) {
     $params = array();
     $params['what'] = $what;
     $params['country'] = $country;
@@ -2245,6 +2308,8 @@
     $params['language'] = $language;
     $params['latitude'] = $latitude;
     $params['longitude'] = $longitude;
+    $params['domain'] = $domain;
+    $params['path'] = $path;
     return CentralIndex::doCurl("GET","/entity/search/what/bynearest",$params);
   }
 
@@ -2257,15 +2322,19 @@
    *  @param page - What page number to retrieve
    *  @param country - Which country to return results for. An ISO compatible country code, E.g. ie e.g. ie
    *  @param language - An ISO compatible language code, E.g. en
+   *  @param domain
+   *  @param path
    *  @return - the data from the api
   */
-  public function getEntitySearchWho( $who, $per_page, $page, $country, $language) {
+  public function getEntitySearchWho( $who, $per_page, $page, $country, $language, $domain, $path) {
     $params = array();
     $params['who'] = $who;
     $params['per_page'] = $per_page;
     $params['page'] = $page;
     $params['country'] = $country;
     $params['language'] = $language;
+    $params['domain'] = $domain;
+    $params['path'] = $path;
     return CentralIndex::doCurl("GET","/entity/search/who",$params);
   }
 
@@ -2282,9 +2351,11 @@
    *  @param page
    *  @param country
    *  @param language - An ISO compatible language code, E.g. en
+   *  @param domain
+   *  @param path
    *  @return - the data from the api
   */
-  public function getEntitySearchWhoByboundingbox( $who, $latitude_1, $longitude_1, $latitude_2, $longitude_2, $per_page, $page, $country, $language) {
+  public function getEntitySearchWhoByboundingbox( $who, $latitude_1, $longitude_1, $latitude_2, $longitude_2, $per_page, $page, $country, $language, $domain, $path) {
     $params = array();
     $params['who'] = $who;
     $params['latitude_1'] = $latitude_1;
@@ -2295,6 +2366,8 @@
     $params['page'] = $page;
     $params['country'] = $country;
     $params['language'] = $language;
+    $params['domain'] = $domain;
+    $params['path'] = $path;
     return CentralIndex::doCurl("GET","/entity/search/who/byboundingbox",$params);
   }
 
@@ -2310,9 +2383,11 @@
    *  @param latitude - The decimal latitude of the search context (optional)
    *  @param longitude - The decimal longitude of the search context (optional)
    *  @param language - An ISO compatible language code, E.g. en
+   *  @param domain
+   *  @param path
    *  @return - the data from the api
   */
-  public function getEntitySearchWhoBylocation( $who, $where, $per_page, $page, $country, $latitude, $longitude, $language) {
+  public function getEntitySearchWhoBylocation( $who, $where, $per_page, $page, $country, $latitude, $longitude, $language, $domain, $path) {
     $params = array();
     $params['who'] = $who;
     $params['where'] = $where;
@@ -2322,6 +2397,8 @@
     $params['latitude'] = $latitude;
     $params['longitude'] = $longitude;
     $params['language'] = $language;
+    $params['domain'] = $domain;
+    $params['path'] = $path;
     return CentralIndex::doCurl("GET","/entity/search/who/bylocation",$params);
   }
 
@@ -2336,9 +2413,11 @@
    *  @param language - An ISO compatible language code, E.g. en
    *  @param latitude - The decimal latitude of the centre point of the search
    *  @param longitude - The decimal longitude of the centre point of the search
+   *  @param domain
+   *  @param path
    *  @return - the data from the api
   */
-  public function getEntitySearchWhoBynearest( $who, $country, $per_page, $page, $language, $latitude, $longitude) {
+  public function getEntitySearchWhoBynearest( $who, $country, $per_page, $page, $language, $latitude, $longitude, $domain, $path) {
     $params = array();
     $params['who'] = $who;
     $params['country'] = $country;
@@ -2347,6 +2426,8 @@
     $params['language'] = $language;
     $params['latitude'] = $latitude;
     $params['longitude'] = $longitude;
+    $params['domain'] = $domain;
+    $params['path'] = $path;
     return CentralIndex::doCurl("GET","/entity/search/who/bynearest",$params);
   }
 
@@ -2373,6 +2454,21 @@
 
 
   /**
+   * Allows a social media object to be reduced in confidence
+   *
+   *  @param entity_id
+   *  @param gen_id
+   *  @return - the data from the api
+  */
+  public function deleteEntitySocialmedia( $entity_id, $gen_id) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['gen_id'] = $gen_id;
+    return CentralIndex::doCurl("DELETE","/entity/socialmedia",$params);
+  }
+
+
+  /**
    * With a known entity id, a social media object can be added.
    *
    *  @param entity_id
@@ -2390,17 +2486,17 @@
 
 
   /**
-   * Allows a social media object to be reduced in confidence
+   * Allows a special offer object to be reduced in confidence
    *
    *  @param entity_id
    *  @param gen_id
    *  @return - the data from the api
   */
-  public function deleteEntitySocialmedia( $entity_id, $gen_id) {
+  public function deleteEntitySpecial_offer( $entity_id, $gen_id) {
     $params = array();
     $params['entity_id'] = $entity_id;
     $params['gen_id'] = $gen_id;
-    return CentralIndex::doCurl("DELETE","/entity/socialmedia",$params);
+    return CentralIndex::doCurl("DELETE","/entity/special_offer",$params);
   }
 
 
@@ -2432,21 +2528,6 @@
 
 
   /**
-   * Allows a special offer object to be reduced in confidence
-   *
-   *  @param entity_id
-   *  @param gen_id
-   *  @return - the data from the api
-  */
-  public function deleteEntitySpecial_offer( $entity_id, $gen_id) {
-    $params = array();
-    $params['entity_id'] = $entity_id;
-    $params['gen_id'] = $gen_id;
-    return CentralIndex::doCurl("DELETE","/entity/special_offer",$params);
-  }
-
-
-  /**
    * With a known entity id, a status object can be updated.
    *
    *  @param entity_id
@@ -2462,6 +2543,21 @@
     $params['inactive_reason'] = $inactive_reason;
     $params['inactive_description'] = $inactive_description;
     return CentralIndex::doCurl("POST","/entity/status",$params);
+  }
+
+
+  /**
+   * Allows a tag object to be reduced in confidence
+   *
+   *  @param entity_id
+   *  @param gen_id
+   *  @return - the data from the api
+  */
+  public function deleteEntityTag( $entity_id, $gen_id) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['gen_id'] = $gen_id;
+    return CentralIndex::doCurl("DELETE","/entity/tag",$params);
   }
 
 
@@ -2483,17 +2579,17 @@
 
 
   /**
-   * Allows a tag object to be reduced in confidence
+   * Allows a testimonial object to be reduced in confidence
    *
    *  @param entity_id
    *  @param gen_id
    *  @return - the data from the api
   */
-  public function deleteEntityTag( $entity_id, $gen_id) {
+  public function deleteEntityTestimonial( $entity_id, $gen_id) {
     $params = array();
     $params['entity_id'] = $entity_id;
     $params['gen_id'] = $gen_id;
-    return CentralIndex::doCurl("DELETE","/entity/tag",$params);
+    return CentralIndex::doCurl("DELETE","/entity/testimonial",$params);
   }
 
 
@@ -2515,21 +2611,6 @@
     $params['date'] = $date;
     $params['testifier_name'] = $testifier_name;
     return CentralIndex::doCurl("POST","/entity/testimonial",$params);
-  }
-
-
-  /**
-   * Allows a testimonial object to be reduced in confidence
-   *
-   *  @param entity_id
-   *  @param gen_id
-   *  @return - the data from the api
-  */
-  public function deleteEntityTestimonial( $entity_id, $gen_id) {
-    $params = array();
-    $params['entity_id'] = $entity_id;
-    $params['gen_id'] = $gen_id;
-    return CentralIndex::doCurl("DELETE","/entity/testimonial",$params);
   }
 
 
@@ -2658,13 +2739,17 @@
    *  @param entity_id - The id of the entity to create the entityserve event for
    *  @param country - the ISO code of the country
    *  @param event_type - The event type being recorded
+   *  @param domain
+   *  @param path
    *  @return - the data from the api
   */
-  public function putEntityserve( $entity_id, $country, $event_type) {
+  public function putEntityserve( $entity_id, $country, $event_type, $domain, $path) {
     $params = array();
     $params['entity_id'] = $entity_id;
     $params['country'] = $country;
     $params['event_type'] = $event_type;
+    $params['domain'] = $domain;
+    $params['path'] = $path;
     return CentralIndex::doCurl("PUT","/entityserve",$params);
   }
 
