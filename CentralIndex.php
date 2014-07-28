@@ -260,9 +260,10 @@
    *  @param referrer_url
    *  @param referrer_name
    *  @param destructive
+   *  @param delete_mode - The type of object contribution deletion
    *  @return - the data from the api
   */
-  public function putBusiness( $name, $building_number, $branch_name, $address1, $address2, $address3, $district, $town, $county, $province, $postcode, $country, $latitude, $longitude, $timezone, $telephone_number, $additional_telephone_number, $email, $website, $category_id, $category_type, $do_not_display, $referrer_url, $referrer_name, $destructive) {
+  public function putBusiness( $name, $building_number, $branch_name, $address1, $address2, $address3, $district, $town, $county, $province, $postcode, $country, $latitude, $longitude, $timezone, $telephone_number, $additional_telephone_number, $email, $website, $category_id, $category_type, $do_not_display, $referrer_url, $referrer_name, $destructive, $delete_mode) {
     $params = array();
     $params['name'] = $name;
     $params['building_number'] = $building_number;
@@ -289,6 +290,7 @@
     $params['referrer_url'] = $referrer_url;
     $params['referrer_name'] = $referrer_name;
     $params['destructive'] = $destructive;
+    $params['delete_mode'] = $delete_mode;
     return CentralIndex::doCurl("PUT","/business",$params);
   }
 
@@ -952,13 +954,15 @@
    *  @param entity_id - The unique entity ID e.g. 379236608286720
    *  @param domain
    *  @param path
+   *  @param data_filter
    *  @return - the data from the api
   */
-  public function getEntity( $entity_id, $domain, $path) {
+  public function getEntity( $entity_id, $domain, $path, $data_filter) {
     $params = array();
     $params['entity_id'] = $entity_id;
     $params['domain'] = $domain;
     $params['path'] = $path;
+    $params['data_filter'] = $data_filter;
     return CentralIndex::doCurl("GET","/entity",$params);
   }
 
@@ -1890,9 +1894,10 @@
    *  @param uncontribute_masheryid - Do we want to uncontribute any data for a masheryid?
    *  @param uncontribute_userid - Do we want to uncontribute any data for a user_id?
    *  @param uncontribute_supplierid - Do we want to uncontribute any data for a supplier_id?
+   *  @param delete_mode - The type of object contribution deletion
    *  @return - the data from the api
   */
-  public function postEntityMerge( $from, $to, $override_trust, $uncontribute_masheryid, $uncontribute_userid, $uncontribute_supplierid) {
+  public function postEntityMerge( $from, $to, $override_trust, $uncontribute_masheryid, $uncontribute_userid, $uncontribute_supplierid, $delete_mode) {
     $params = array();
     $params['from'] = $from;
     $params['to'] = $to;
@@ -1900,6 +1905,7 @@
     $params['uncontribute_masheryid'] = $uncontribute_masheryid;
     $params['uncontribute_userid'] = $uncontribute_userid;
     $params['uncontribute_supplierid'] = $uncontribute_supplierid;
+    $params['delete_mode'] = $delete_mode;
     return CentralIndex::doCurl("POST","/entity/merge",$params);
   }
 
@@ -4386,9 +4392,10 @@
    *  @param description
    *  @param active
    *  @param products
+   *  @param master_user_id
    *  @return - the data from the api
   */
-  public function postReseller( $reseller_id, $country, $name, $description, $active, $products) {
+  public function postReseller( $reseller_id, $country, $name, $description, $active, $products, $master_user_id) {
     $params = array();
     $params['reseller_id'] = $reseller_id;
     $params['country'] = $country;
@@ -4396,6 +4403,7 @@
     $params['description'] = $description;
     $params['active'] = $active;
     $params['products'] = $products;
+    $params['master_user_id'] = $master_user_id;
     return CentralIndex::doCurl("POST","/reseller",$params);
   }
 
@@ -4655,9 +4663,10 @@
    *  @param seed_masheryid
    *  @param supplier_masheryid
    *  @param country
+   *  @param data_type
    *  @return - the data from the api
   */
-  public function postSyndicationCreate( $syndication_type, $publisher_id, $expiry_date, $entity_id, $group_id, $seed_masheryid, $supplier_masheryid, $country) {
+  public function postSyndicationCreate( $syndication_type, $publisher_id, $expiry_date, $entity_id, $group_id, $seed_masheryid, $supplier_masheryid, $country, $data_type) {
     $params = array();
     $params['syndication_type'] = $syndication_type;
     $params['publisher_id'] = $publisher_id;
@@ -4667,6 +4676,7 @@
     $params['seed_masheryid'] = $seed_masheryid;
     $params['supplier_masheryid'] = $supplier_masheryid;
     $params['country'] = $country;
+    $params['data_type'] = $data_type;
     return CentralIndex::doCurl("POST","/syndication/create",$params);
   }
 
