@@ -87,6 +87,29 @@
     }
 
   /**
+   * When we get some activity make a record of it
+   *
+   *  @param entity_id - The entity to pull
+   *  @param entity_name - The entity name this entry refers to
+   *  @param type - The activity type.
+   *  @param country - The country for the activity
+   *  @param longitude - The longitude for teh activity
+   *  @param latitude - The latitude for teh activity
+   *  @return - the data from the api
+  */
+  public function postActivity_stream( $entity_id, $entity_name, $type, $country, $longitude, $latitude) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['entity_name'] = $entity_name;
+    $params['type'] = $type;
+    $params['country'] = $country;
+    $params['longitude'] = $longitude;
+    $params['latitude'] = $latitude;
+    return CentralIndex::doCurl("POST","/activity_stream",$params);
+  }
+
+
+  /**
    * Get the activity from the collection
    *
    *  @param type - The activity type: add, claim, special offer, image, video, description, testimonial
@@ -110,29 +133,6 @@
     $params['number_results'] = $number_results;
     $params['unique_action'] = $unique_action;
     return CentralIndex::doCurl("GET","/activity_stream",$params);
-  }
-
-
-  /**
-   * When we get some activity make a record of it
-   *
-   *  @param entity_id - The entity to pull
-   *  @param entity_name - The entity name this entry refers to
-   *  @param type - The activity type.
-   *  @param country - The country for the activity
-   *  @param longitude - The longitude for teh activity
-   *  @param latitude - The latitude for teh activity
-   *  @return - the data from the api
-  */
-  public function postActivity_stream( $entity_id, $entity_name, $type, $country, $longitude, $latitude) {
-    $params = array();
-    $params['entity_id'] = $entity_id;
-    $params['entity_name'] = $entity_name;
-    $params['type'] = $type;
-    $params['country'] = $country;
-    $params['longitude'] = $longitude;
-    $params['latitude'] = $latitude;
-    return CentralIndex::doCurl("POST","/activity_stream",$params);
   }
 
 
@@ -260,9 +260,10 @@
    *  @param referrer_url
    *  @param referrer_name
    *  @param destructive
+   *  @param delete_mode - The type of object contribution deletion
    *  @return - the data from the api
   */
-  public function putBusiness( $name, $building_number, $branch_name, $address1, $address2, $address3, $district, $town, $county, $province, $postcode, $country, $latitude, $longitude, $timezone, $telephone_number, $additional_telephone_number, $email, $website, $category_id, $category_type, $do_not_display, $referrer_url, $referrer_name, $destructive) {
+  public function putBusiness( $name, $building_number, $branch_name, $address1, $address2, $address3, $district, $town, $county, $province, $postcode, $country, $latitude, $longitude, $timezone, $telephone_number, $additional_telephone_number, $email, $website, $category_id, $category_type, $do_not_display, $referrer_url, $referrer_name, $destructive, $delete_mode) {
     $params = array();
     $params['name'] = $name;
     $params['building_number'] = $building_number;
@@ -289,7 +290,38 @@
     $params['referrer_url'] = $referrer_url;
     $params['referrer_name'] = $referrer_name;
     $params['destructive'] = $destructive;
+    $params['delete_mode'] = $delete_mode;
     return CentralIndex::doCurl("PUT","/business",$params);
+  }
+
+
+  /**
+   * Create entity via JSON
+   *
+   *  @param json - Business JSON
+   *  @param country - The country to fetch results for e.g. gb
+   *  @param timezone
+   *  @return - the data from the api
+  */
+  public function putBusinessJson( $json, $country, $timezone) {
+    $params = array();
+    $params['json'] = $json;
+    $params['country'] = $country;
+    $params['timezone'] = $timezone;
+    return CentralIndex::doCurl("PUT","/business/json",$params);
+  }
+
+
+  /**
+   * Create entity via JSON
+   *
+   *  @param queue_id - Queue ID
+   *  @return - the data from the api
+  */
+  public function postBusinessJsonProcess( $queue_id) {
+    $params = array();
+    $params['queue_id'] = $queue_id;
+    return CentralIndex::doCurl("POST","/business/json/process",$params);
   }
 
 
@@ -317,19 +349,6 @@
 
 
   /**
-   * Returns business tool that matches a given tool id
-   *
-   *  @param tool_id
-   *  @return - the data from the api
-  */
-  public function getBusiness_tool( $tool_id) {
-    $params = array();
-    $params['tool_id'] = $tool_id;
-    return CentralIndex::doCurl("GET","/business_tool",$params);
-  }
-
-
-  /**
    * Delete a business tool with a specified tool_id
    *
    *  @param tool_id
@@ -339,6 +358,19 @@
     $params = array();
     $params['tool_id'] = $tool_id;
     return CentralIndex::doCurl("DELETE","/business_tool",$params);
+  }
+
+
+  /**
+   * Returns business tool that matches a given tool id
+   *
+   *  @param tool_id
+   *  @return - the data from the api
+  */
+  public function getBusiness_tool( $tool_id) {
+    $params = array();
+    $params['tool_id'] = $tool_id;
+    return CentralIndex::doCurl("GET","/business_tool",$params);
   }
 
 
@@ -371,19 +403,6 @@
 
 
   /**
-   * Returns the supplied wolf category object by fetching the supplied category_id from our categories object.
-   *
-   *  @param category_id
-   *  @return - the data from the api
-  */
-  public function getCategory( $category_id) {
-    $params = array();
-    $params['category_id'] = $category_id;
-    return CentralIndex::doCurl("GET","/category",$params);
-  }
-
-
-  /**
    * With a known category id, an category object can be added.
    *
    *  @param category_id
@@ -397,6 +416,19 @@
     $params['language'] = $language;
     $params['name'] = $name;
     return CentralIndex::doCurl("PUT","/category",$params);
+  }
+
+
+  /**
+   * Returns the supplied wolf category object by fetching the supplied category_id from our categories object.
+   *
+   *  @param category_id
+   *  @return - the data from the api
+  */
+  public function getCategory( $category_id) {
+    $params = array();
+    $params['category_id'] = $category_id;
+    return CentralIndex::doCurl("GET","/category",$params);
   }
 
 
@@ -896,23 +928,6 @@
 
 
   /**
-   * Allows a whole entity to be pulled from the datastore by its unique id
-   *
-   *  @param entity_id - The unique entity ID e.g. 379236608286720
-   *  @param domain
-   *  @param path
-   *  @return - the data from the api
-  */
-  public function getEntity( $entity_id, $domain, $path) {
-    $params = array();
-    $params['entity_id'] = $entity_id;
-    $params['domain'] = $domain;
-    $params['path'] = $path;
-    return CentralIndex::doCurl("GET","/entity",$params);
-  }
-
-
-  /**
    * This entity isn't really supported anymore. You probably want PUT /business. Only to be used for testing.
    *
    *  @param type
@@ -930,6 +945,25 @@
     $params['trust'] = $trust;
     $params['our_data'] = $our_data;
     return CentralIndex::doCurl("PUT","/entity",$params);
+  }
+
+
+  /**
+   * Allows a whole entity to be pulled from the datastore by its unique id
+   *
+   *  @param entity_id - The unique entity ID e.g. 379236608286720
+   *  @param domain
+   *  @param path
+   *  @param data_filter
+   *  @return - the data from the api
+  */
+  public function getEntity( $entity_id, $domain, $path, $data_filter) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['domain'] = $domain;
+    $params['path'] = $path;
+    $params['data_filter'] = $data_filter;
+    return CentralIndex::doCurl("GET","/entity",$params);
   }
 
 
@@ -1131,21 +1165,6 @@
 
 
   /**
-   * Adding an affiliate adblock to a known entity
-   *
-   *  @param entity_id
-   *  @param adblock - Number of results returned per page
-   *  @return - the data from the api
-  */
-  public function postEntityAffiliate_adblock( $entity_id, $adblock) {
-    $params = array();
-    $params['entity_id'] = $entity_id;
-    $params['adblock'] = $adblock;
-    return CentralIndex::doCurl("POST","/entity/affiliate_adblock",$params);
-  }
-
-
-  /**
    * Deleteing an affiliate adblock from a known entity
    *
    *  @param entity_id
@@ -1157,6 +1176,21 @@
     $params['entity_id'] = $entity_id;
     $params['gen_id'] = $gen_id;
     return CentralIndex::doCurl("DELETE","/entity/affiliate_adblock",$params);
+  }
+
+
+  /**
+   * Adding an affiliate adblock to a known entity
+   *
+   *  @param entity_id
+   *  @param adblock - Number of results returned per page
+   *  @return - the data from the api
+  */
+  public function postEntityAffiliate_adblock( $entity_id, $adblock) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['adblock'] = $adblock;
+    return CentralIndex::doCurl("POST","/entity/affiliate_adblock",$params);
   }
 
 
@@ -1442,6 +1476,21 @@
 
 
   /**
+   * Allows a phone object to be reduced in confidence
+   *
+   *  @param entity_id
+   *  @param gen_id
+   *  @return - the data from the api
+  */
+  public function deleteEntityDocument( $entity_id, $gen_id) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['gen_id'] = $gen_id;
+    return CentralIndex::doCurl("DELETE","/entity/document",$params);
+  }
+
+
+  /**
    * With a known entity id, an document object can be added.
    *
    *  @param entity_id
@@ -1455,21 +1504,6 @@
     $params['name'] = $name;
     $params['filedata'] = $filedata;
     return CentralIndex::doCurl("POST","/entity/document",$params);
-  }
-
-
-  /**
-   * Allows a phone object to be reduced in confidence
-   *
-   *  @param entity_id
-   *  @param gen_id
-   *  @return - the data from the api
-  */
-  public function deleteEntityDocument( $entity_id, $gen_id) {
-    $params = array();
-    $params['entity_id'] = $entity_id;
-    $params['gen_id'] = $gen_id;
-    return CentralIndex::doCurl("DELETE","/entity/document",$params);
   }
 
 
@@ -1548,6 +1582,21 @@
 
 
   /**
+   * Allows a fax object to be reduced in confidence
+   *
+   *  @param entity_id
+   *  @param gen_id
+   *  @return - the data from the api
+  */
+  public function deleteEntityFax( $entity_id, $gen_id) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['gen_id'] = $gen_id;
+    return CentralIndex::doCurl("DELETE","/entity/fax",$params);
+  }
+
+
+  /**
    * With a known entity id, an fax object can be added.
    *
    *  @param entity_id
@@ -1565,17 +1614,32 @@
 
 
   /**
-   * Allows a fax object to be reduced in confidence
+   * With a known entity id, a featured message can be added
    *
    *  @param entity_id
-   *  @param gen_id
+   *  @param featured_text
+   *  @param featured_url
    *  @return - the data from the api
   */
-  public function deleteEntityFax( $entity_id, $gen_id) {
+  public function postEntityFeatured_message( $entity_id, $featured_text, $featured_url) {
     $params = array();
     $params['entity_id'] = $entity_id;
-    $params['gen_id'] = $gen_id;
-    return CentralIndex::doCurl("DELETE","/entity/fax",$params);
+    $params['featured_text'] = $featured_text;
+    $params['featured_url'] = $featured_url;
+    return CentralIndex::doCurl("POST","/entity/featured_message",$params);
+  }
+
+
+  /**
+   * Allows a featured message object to be removed
+   *
+   *  @param entity_id
+   *  @return - the data from the api
+  */
+  public function deleteEntityFeatured_message( $entity_id) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    return CentralIndex::doCurl("DELETE","/entity/featured_message",$params);
   }
 
 
@@ -1629,6 +1693,21 @@
 
 
   /**
+   * Allows a image object to be reduced in confidence
+   *
+   *  @param entity_id
+   *  @param gen_id
+   *  @return - the data from the api
+  */
+  public function deleteEntityImage( $entity_id, $gen_id) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['gen_id'] = $gen_id;
+    return CentralIndex::doCurl("DELETE","/entity/image",$params);
+  }
+
+
+  /**
    * With a known entity id, a image object can be added.
    *
    *  @param entity_id
@@ -1642,21 +1721,6 @@
     $params['filedata'] = $filedata;
     $params['image_name'] = $image_name;
     return CentralIndex::doCurl("POST","/entity/image",$params);
-  }
-
-
-  /**
-   * Allows a image object to be reduced in confidence
-   *
-   *  @param entity_id
-   *  @param gen_id
-   *  @return - the data from the api
-  */
-  public function deleteEntityImage( $entity_id, $gen_id) {
-    $params = array();
-    $params['entity_id'] = $entity_id;
-    $params['gen_id'] = $gen_id;
-    return CentralIndex::doCurl("DELETE","/entity/image",$params);
   }
 
 
@@ -1724,21 +1788,6 @@
 
 
   /**
-   * Allows a list description object to be reduced in confidence
-   *
-   *  @param gen_id
-   *  @param entity_id
-   *  @return - the data from the api
-  */
-  public function deleteEntityList( $gen_id, $entity_id) {
-    $params = array();
-    $params['gen_id'] = $gen_id;
-    $params['entity_id'] = $entity_id;
-    return CentralIndex::doCurl("DELETE","/entity/list",$params);
-  }
-
-
-  /**
    * With a known entity id, a list description object can be added.
    *
    *  @param entity_id
@@ -1752,6 +1801,21 @@
     $params['headline'] = $headline;
     $params['body'] = $body;
     return CentralIndex::doCurl("POST","/entity/list",$params);
+  }
+
+
+  /**
+   * Allows a list description object to be reduced in confidence
+   *
+   *  @param gen_id
+   *  @param entity_id
+   *  @return - the data from the api
+  */
+  public function deleteEntityList( $gen_id, $entity_id) {
+    $params = array();
+    $params['gen_id'] = $gen_id;
+    $params['entity_id'] = $entity_id;
+    return CentralIndex::doCurl("DELETE","/entity/list",$params);
   }
 
 
@@ -1773,21 +1837,6 @@
 
 
   /**
-   * Allows a phone object to be reduced in confidence
-   *
-   *  @param entity_id
-   *  @param gen_id
-   *  @return - the data from the api
-  */
-  public function deleteEntityLogo( $entity_id, $gen_id) {
-    $params = array();
-    $params['entity_id'] = $entity_id;
-    $params['gen_id'] = $gen_id;
-    return CentralIndex::doCurl("DELETE","/entity/logo",$params);
-  }
-
-
-  /**
    * With a known entity id, a logo object can be added.
    *
    *  @param entity_id
@@ -1801,6 +1850,21 @@
     $params['filedata'] = $filedata;
     $params['logo_name'] = $logo_name;
     return CentralIndex::doCurl("POST","/entity/logo",$params);
+  }
+
+
+  /**
+   * Allows a phone object to be reduced in confidence
+   *
+   *  @param entity_id
+   *  @param gen_id
+   *  @return - the data from the api
+  */
+  public function deleteEntityLogo( $entity_id, $gen_id) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['gen_id'] = $gen_id;
+    return CentralIndex::doCurl("DELETE","/entity/logo",$params);
   }
 
 
@@ -1830,9 +1894,10 @@
    *  @param uncontribute_masheryid - Do we want to uncontribute any data for a masheryid?
    *  @param uncontribute_userid - Do we want to uncontribute any data for a user_id?
    *  @param uncontribute_supplierid - Do we want to uncontribute any data for a supplier_id?
+   *  @param delete_mode - The type of object contribution deletion
    *  @return - the data from the api
   */
-  public function postEntityMerge( $from, $to, $override_trust, $uncontribute_masheryid, $uncontribute_userid, $uncontribute_supplierid) {
+  public function postEntityMerge( $from, $to, $override_trust, $uncontribute_masheryid, $uncontribute_userid, $uncontribute_supplierid, $delete_mode) {
     $params = array();
     $params['from'] = $from;
     $params['to'] = $to;
@@ -1840,6 +1905,7 @@
     $params['uncontribute_masheryid'] = $uncontribute_masheryid;
     $params['uncontribute_userid'] = $uncontribute_userid;
     $params['uncontribute_supplierid'] = $uncontribute_supplierid;
+    $params['delete_mode'] = $delete_mode;
     return CentralIndex::doCurl("POST","/entity/merge",$params);
   }
 
@@ -1925,21 +1991,6 @@
 
 
   /**
-   * Allows a payment_type object to be reduced in confidence
-   *
-   *  @param entity_id
-   *  @param gen_id
-   *  @return - the data from the api
-  */
-  public function deleteEntityPayment_type( $entity_id, $gen_id) {
-    $params = array();
-    $params['entity_id'] = $entity_id;
-    $params['gen_id'] = $gen_id;
-    return CentralIndex::doCurl("DELETE","/entity/payment_type",$params);
-  }
-
-
-  /**
    * With a known entity id, a payment_type object can be added.
    *
    *  @param entity_id - the id of the entity to add the payment type to
@@ -1955,17 +2006,17 @@
 
 
   /**
-   * Allows a phone object to be reduced in confidence
+   * Allows a payment_type object to be reduced in confidence
    *
    *  @param entity_id
    *  @param gen_id
    *  @return - the data from the api
   */
-  public function deleteEntityPhone( $entity_id, $gen_id) {
+  public function deleteEntityPayment_type( $entity_id, $gen_id) {
     $params = array();
     $params['entity_id'] = $entity_id;
     $params['gen_id'] = $gen_id;
-    return CentralIndex::doCurl("DELETE","/entity/phone",$params);
+    return CentralIndex::doCurl("DELETE","/entity/payment_type",$params);
   }
 
 
@@ -1983,6 +2034,21 @@
     $params['number'] = $number;
     $params['trackable'] = $trackable;
     return CentralIndex::doCurl("POST","/entity/phone",$params);
+  }
+
+
+  /**
+   * Allows a phone object to be reduced in confidence
+   *
+   *  @param entity_id
+   *  @param gen_id
+   *  @return - the data from the api
+  */
+  public function deleteEntityPhone( $entity_id, $gen_id) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['gen_id'] = $gen_id;
+    return CentralIndex::doCurl("DELETE","/entity/phone",$params);
   }
 
 
@@ -2031,6 +2097,27 @@
     $params = array();
     $params['supplier_id'] = $supplier_id;
     return CentralIndex::doCurl("GET","/entity/provisional/by_supplier_id",$params);
+  }
+
+
+  /**
+   * removes  a given entities supplier/masheryid/user_id content and makes the entity inactive if the entity is un-usable
+   *
+   *  @param entity_id - The entity to pull
+   *  @param purge_masheryid - The purge masheryid to match
+   *  @param purge_supplier_id - The purge supplier id to match
+   *  @param purge_user_id - The purge user id to match
+   *  @param destructive
+   *  @return - the data from the api
+  */
+  public function postEntityPurge( $entity_id, $purge_masheryid, $purge_supplier_id, $purge_user_id, $destructive) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['purge_masheryid'] = $purge_masheryid;
+    $params['purge_supplier_id'] = $purge_supplier_id;
+    $params['purge_user_id'] = $purge_user_id;
+    $params['destructive'] = $destructive;
+    return CentralIndex::doCurl("POST","/entity/purge",$params);
   }
 
 
@@ -2123,37 +2210,6 @@
 
 
   /**
-   * Search for entities matching the supplied group_id and where, ordered by nearness
-   *
-   *  @param group_id - the group_id to search for
-   *  @param where - the location to search in
-   *  @param country - The country to fetch results for e.g. gb
-   *  @param per_page - Number of results returned per page
-   *  @param page - Which page number to retrieve
-   *  @param language - An ISO compatible language code, E.g. en
-   *  @param latitude - The decimal latitude of the centre point of the search context
-   *  @param longitude - The decimal longitude of the centre point of the search context
-   *  @param domain
-   *  @param path
-   *  @return - the data from the api
-  */
-  public function getEntitySearchGroupBylocation( $group_id, $where, $country, $per_page, $page, $language, $latitude, $longitude, $domain, $path) {
-    $params = array();
-    $params['group_id'] = $group_id;
-    $params['where'] = $where;
-    $params['country'] = $country;
-    $params['per_page'] = $per_page;
-    $params['page'] = $page;
-    $params['language'] = $language;
-    $params['latitude'] = $latitude;
-    $params['longitude'] = $longitude;
-    $params['domain'] = $domain;
-    $params['path'] = $path;
-    return CentralIndex::doCurl("GET","/entity/search/group/bylocation",$params);
-  }
-
-
-  /**
    * Search for entities matching the supplied group_id, ordered by nearness
    *
    *  @param group_id - the group_id to search for
@@ -2163,11 +2219,13 @@
    *  @param language - An ISO compatible language code, E.g. en
    *  @param latitude - The decimal latitude of the centre point of the search
    *  @param longitude - The decimal longitude of the centre point of the search
+   *  @param where - The location to search for
    *  @param domain
    *  @param path
+   *  @param unitOfDistance
    *  @return - the data from the api
   */
-  public function getEntitySearchGroupBynearest( $group_id, $country, $per_page, $page, $language, $latitude, $longitude, $domain, $path) {
+  public function getEntitySearchGroupBynearest( $group_id, $country, $per_page, $page, $language, $latitude, $longitude, $where, $domain, $path, $unitOfDistance) {
     $params = array();
     $params['group_id'] = $group_id;
     $params['country'] = $country;
@@ -2176,8 +2234,10 @@
     $params['language'] = $language;
     $params['latitude'] = $latitude;
     $params['longitude'] = $longitude;
+    $params['where'] = $where;
     $params['domain'] = $domain;
     $params['path'] = $path;
+    $params['unitOfDistance'] = $unitOfDistance;
     return CentralIndex::doCurl("GET","/entity/search/group/bynearest",$params);
   }
 
@@ -2501,33 +2561,6 @@
 
 
   /**
-   * With a known entity id, a website object can be added.
-   *
-   *  @param entity_id
-   *  @param title
-   *  @param description
-   *  @param terms
-   *  @param start_date
-   *  @param expiry_date
-   *  @param url
-   *  @param image_url
-   *  @return - the data from the api
-  */
-  public function postEntitySpecial_offer( $entity_id, $title, $description, $terms, $start_date, $expiry_date, $url, $image_url) {
-    $params = array();
-    $params['entity_id'] = $entity_id;
-    $params['title'] = $title;
-    $params['description'] = $description;
-    $params['terms'] = $terms;
-    $params['start_date'] = $start_date;
-    $params['expiry_date'] = $expiry_date;
-    $params['url'] = $url;
-    $params['image_url'] = $image_url;
-    return CentralIndex::doCurl("POST","/entity/special_offer",$params);
-  }
-
-
-  /**
    * Allows a special offer object to be reduced in confidence
    *
    *  @param entity_id
@@ -2539,6 +2572,31 @@
     $params['entity_id'] = $entity_id;
     $params['gen_id'] = $gen_id;
     return CentralIndex::doCurl("DELETE","/entity/special_offer",$params);
+  }
+
+
+  /**
+   * With a known entity id, a website object can be added.
+   *
+   *  @param entity_id
+   *  @param title
+   *  @param description
+   *  @param terms
+   *  @param start_date
+   *  @param expiry_date
+   *  @param url
+   *  @return - the data from the api
+  */
+  public function postEntitySpecial_offer( $entity_id, $title, $description, $terms, $start_date, $expiry_date, $url) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['title'] = $title;
+    $params['description'] = $description;
+    $params['terms'] = $terms;
+    $params['start_date'] = $start_date;
+    $params['expiry_date'] = $expiry_date;
+    $params['url'] = $url;
+    return CentralIndex::doCurl("POST","/entity/special_offer",$params);
   }
 
 
@@ -2562,21 +2620,6 @@
 
 
   /**
-   * Allows a tag object to be reduced in confidence
-   *
-   *  @param entity_id
-   *  @param gen_id
-   *  @return - the data from the api
-  */
-  public function deleteEntityTag( $entity_id, $gen_id) {
-    $params = array();
-    $params['entity_id'] = $entity_id;
-    $params['gen_id'] = $gen_id;
-    return CentralIndex::doCurl("DELETE","/entity/tag",$params);
-  }
-
-
-  /**
    * With a known entity id, an tag object can be added.
    *
    *  @param entity_id
@@ -2590,6 +2633,21 @@
     $params['tag'] = $tag;
     $params['language'] = $language;
     return CentralIndex::doCurl("POST","/entity/tag",$params);
+  }
+
+
+  /**
+   * Allows a tag object to be reduced in confidence
+   *
+   *  @param entity_id
+   *  @param gen_id
+   *  @return - the data from the api
+  */
+  public function deleteEntityTag( $entity_id, $gen_id) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['gen_id'] = $gen_id;
+    return CentralIndex::doCurl("DELETE","/entity/tag",$params);
   }
 
 
@@ -2749,6 +2807,42 @@
 
 
   /**
+   * Allows a yext list object to be removed
+   *
+   *  @param entity_id
+   *  @param gen_id
+   *  @return - the data from the api
+  */
+  public function deleteEntityYext_list( $entity_id, $gen_id) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['gen_id'] = $gen_id;
+    return CentralIndex::doCurl("DELETE","/entity/yext_list",$params);
+  }
+
+
+  /**
+   * With a known entity id, a yext list can be added
+   *
+   *  @param entity_id
+   *  @param yext_list_id
+   *  @param description
+   *  @param name
+   *  @param type
+   *  @return - the data from the api
+  */
+  public function postEntityYext_list( $entity_id, $yext_list_id, $description, $name, $type) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    $params['yext_list_id'] = $yext_list_id;
+    $params['description'] = $description;
+    $params['name'] = $name;
+    $params['type'] = $type;
+    return CentralIndex::doCurl("POST","/entity/yext_list",$params);
+  }
+
+
+  /**
    * Add an entityserve document
    *
    *  @param entity_id - The id of the entity to create the entityserve event for
@@ -2766,19 +2860,6 @@
     $params['domain'] = $domain;
     $params['path'] = $path;
     return CentralIndex::doCurl("PUT","/entityserve",$params);
-  }
-
-
-  /**
-   * Get a flatpack
-   *
-   *  @param flatpack_id - the unique id to search for
-   *  @return - the data from the api
-  */
-  public function getFlatpack( $flatpack_id) {
-    $params = array();
-    $params['flatpack_id'] = $flatpack_id;
-    return CentralIndex::doCurl("GET","/flatpack",$params);
   }
 
 
@@ -2917,6 +2998,19 @@
     $params['products'] = $products;
     $params['linkToRoot'] = $linkToRoot;
     return CentralIndex::doCurl("POST","/flatpack",$params);
+  }
+
+
+  /**
+   * Get a flatpack
+   *
+   *  @param flatpack_id - the unique id to search for
+   *  @return - the data from the api
+  */
+  public function getFlatpack( $flatpack_id) {
+    $params = array();
+    $params['flatpack_id'] = $flatpack_id;
+    return CentralIndex::doCurl("GET","/flatpack",$params);
   }
 
 
@@ -3065,17 +3159,15 @@
 
 
   /**
-   * Remove a canned link to an existing flatpack site.
+   * returns the LESS theme from a flatpack
    *
-   *  @param flatpack_id - the id of the flatpack to delete
-   *  @param gen_id - the id of the canned link to remove
+   *  @param flatpack_id - the unique id to search for
    *  @return - the data from the api
   */
-  public function deleteFlatpackLink( $flatpack_id, $gen_id) {
+  public function getFlatpackLess( $flatpack_id) {
     $params = array();
     $params['flatpack_id'] = $flatpack_id;
-    $params['gen_id'] = $gen_id;
-    return CentralIndex::doCurl("DELETE","/flatpack/link",$params);
+    return CentralIndex::doCurl("GET","/flatpack/less",$params);
   }
 
 
@@ -3095,6 +3187,34 @@
     $params['location'] = $location;
     $params['linkText'] = $linkText;
     return CentralIndex::doCurl("POST","/flatpack/link",$params);
+  }
+
+
+  /**
+   * Remove a canned link to an existing flatpack site.
+   *
+   *  @param flatpack_id - the id of the flatpack to delete
+   *  @param gen_id - the id of the canned link to remove
+   *  @return - the data from the api
+  */
+  public function deleteFlatpackLink( $flatpack_id, $gen_id) {
+    $params = array();
+    $params['flatpack_id'] = $flatpack_id;
+    $params['gen_id'] = $gen_id;
+    return CentralIndex::doCurl("DELETE","/flatpack/link",$params);
+  }
+
+
+  /**
+   * Remove all canned links from an existing flatpack.
+   *
+   *  @param flatpack_id - the id of the flatpack to remove links from
+   *  @return - the data from the api
+  */
+  public function deleteFlatpackLinkAll( $flatpack_id) {
+    $params = array();
+    $params['flatpack_id'] = $flatpack_id;
+    return CentralIndex::doCurl("DELETE","/flatpack/link/all",$params);
   }
 
 
@@ -3144,29 +3264,6 @@
 
 
   /**
-   * Update/Add a Group
-   *
-   *  @param group_id
-   *  @param name
-   *  @param description
-   *  @param url
-   *  @param stamp_user_id
-   *  @param stamp_sql
-   *  @return - the data from the api
-  */
-  public function postGroup( $group_id, $name, $description, $url, $stamp_user_id, $stamp_sql) {
-    $params = array();
-    $params['group_id'] = $group_id;
-    $params['name'] = $name;
-    $params['description'] = $description;
-    $params['url'] = $url;
-    $params['stamp_user_id'] = $stamp_user_id;
-    $params['stamp_sql'] = $stamp_sql;
-    return CentralIndex::doCurl("POST","/group",$params);
-  }
-
-
-  /**
    * Delete a group with a specified group_id
    *
    *  @param group_id
@@ -3189,6 +3286,29 @@
     $params = array();
     $params['group_id'] = $group_id;
     return CentralIndex::doCurl("GET","/group",$params);
+  }
+
+
+  /**
+   * Update/Add a Group
+   *
+   *  @param group_id
+   *  @param name
+   *  @param description
+   *  @param url
+   *  @param stamp_user_id
+   *  @param stamp_sql
+   *  @return - the data from the api
+  */
+  public function postGroup( $group_id, $name, $description, $url, $stamp_user_id, $stamp_sql) {
+    $params = array();
+    $params['group_id'] = $group_id;
+    $params['name'] = $name;
+    $params['description'] = $description;
+    $params['url'] = $url;
+    $params['stamp_user_id'] = $stamp_user_id;
+    $params['stamp_sql'] = $stamp_sql;
+    return CentralIndex::doCurl("POST","/group",$params);
   }
 
 
@@ -3545,33 +3665,6 @@
 
 
   /**
-   * Find all matches by phone number and then return all matches that also match company name and location. Default location_strictness is defined in Km and the default is set to 0.2 (200m)
-   *
-   *  @param phone
-   *  @param company_name
-   *  @param latitude
-   *  @param longitude
-   *  @param postcode
-   *  @param country
-   *  @param name_strictness
-   *  @param location_strictness
-   *  @return - the data from the api
-  */
-  public function getMatchByphone( $phone, $company_name, $latitude, $longitude, $postcode, $country, $name_strictness, $location_strictness) {
-    $params = array();
-    $params['phone'] = $phone;
-    $params['company_name'] = $company_name;
-    $params['latitude'] = $latitude;
-    $params['longitude'] = $longitude;
-    $params['postcode'] = $postcode;
-    $params['country'] = $country;
-    $params['name_strictness'] = $name_strictness;
-    $params['location_strictness'] = $location_strictness;
-    return CentralIndex::doCurl("GET","/match/byphone",$params);
-  }
-
-
-  /**
    * Find all matches by phone number, returning up to 10 matches
    *
    *  @param phone
@@ -3579,12 +3672,12 @@
    *  @param exclude - Entity ID to exclude from the results
    *  @return - the data from the api
   */
-  public function getMatchByphone2( $phone, $country, $exclude) {
+  public function getMatchByphone( $phone, $country, $exclude) {
     $params = array();
     $params['phone'] = $phone;
     $params['country'] = $country;
     $params['exclude'] = $exclude;
-    return CentralIndex::doCurl("GET","/match/byphone2",$params);
+    return CentralIndex::doCurl("GET","/match/byphone",$params);
   }
 
 
@@ -3617,9 +3710,14 @@
    *  @param name_score
    *  @param name_match
    *  @param distance
+   *  @param phone_match
+   *  @param category_match
+   *  @param email_match
+   *  @param website_match
+   *  @param match
    *  @return - the data from the api
   */
-  public function putMatching_log( $primary_entity_id, $secondary_entity_id, $primary_name, $secondary_name, $address_score, $address_match, $name_score, $name_match, $distance) {
+  public function putMatching_log( $primary_entity_id, $secondary_entity_id, $primary_name, $secondary_name, $address_score, $address_match, $name_score, $name_match, $distance, $phone_match, $category_match, $email_match, $website_match, $match) {
     $params = array();
     $params['primary_entity_id'] = $primary_entity_id;
     $params['secondary_entity_id'] = $secondary_entity_id;
@@ -3630,20 +3728,12 @@
     $params['name_score'] = $name_score;
     $params['name_match'] = $name_match;
     $params['distance'] = $distance;
+    $params['phone_match'] = $phone_match;
+    $params['category_match'] = $category_match;
+    $params['email_match'] = $email_match;
+    $params['website_match'] = $website_match;
+    $params['match'] = $match;
     return CentralIndex::doCurl("PUT","/matching_log",$params);
-  }
-
-
-  /**
-   * Fetching a message
-   *
-   *  @param message_id - The message id to pull the message for
-   *  @return - the data from the api
-  */
-  public function getMessage( $message_id) {
-    $params = array();
-    $params['message_id'] = $message_id;
-    return CentralIndex::doCurl("GET","/message",$params);
   }
 
 
@@ -3677,6 +3767,19 @@
 
 
   /**
+   * Fetching a message
+   *
+   *  @param message_id - The message id to pull the message for
+   *  @return - the data from the api
+  */
+  public function getMessage( $message_id) {
+    $params = array();
+    $params['message_id'] = $message_id;
+    return CentralIndex::doCurl("GET","/message",$params);
+  }
+
+
+  /**
    * Fetching messages by ses_id
    *
    *  @param ses_id - The amazon id to pull the message for
@@ -3686,6 +3789,19 @@
     $params = array();
     $params['ses_id'] = $ses_id;
     return CentralIndex::doCurl("GET","/message/by_ses_id",$params);
+  }
+
+
+  /**
+   * Get a multipack
+   *
+   *  @param multipack_id - the unique id to search for
+   *  @return - the data from the api
+  */
+  public function getMultipack( $multipack_id) {
+    $params = array();
+    $params['multipack_id'] = $multipack_id;
+    return CentralIndex::doCurl("GET","/multipack",$params);
   }
 
 
@@ -3710,13 +3826,14 @@
    *  @param searchIntroHeader - Introductory header
    *  @param searchIntroText - Introductory text
    *  @param searchShowAll - display all search results on one page
+   *  @param searchUnitOfDistance - the unit of distance to use for search
    *  @param cookiePolicyShow - whether to show cookie policy
    *  @param cookiePolicyUrl - url of cookie policy
    *  @param twitterUrl - url of twitter feed
    *  @param facebookUrl - url of facebook feed
    *  @return - the data from the api
   */
-  public function postMultipack( $multipack_id, $group_id, $domainName, $multipackName, $less, $country, $menuTop, $menuBottom, $language, $menuFooter, $searchNumberResults, $searchTitle, $searchDescription, $searchTitleNoWhere, $searchDescriptionNoWhere, $searchIntroHeader, $searchIntroText, $searchShowAll, $cookiePolicyShow, $cookiePolicyUrl, $twitterUrl, $facebookUrl) {
+  public function postMultipack( $multipack_id, $group_id, $domainName, $multipackName, $less, $country, $menuTop, $menuBottom, $language, $menuFooter, $searchNumberResults, $searchTitle, $searchDescription, $searchTitleNoWhere, $searchDescriptionNoWhere, $searchIntroHeader, $searchIntroText, $searchShowAll, $searchUnitOfDistance, $cookiePolicyShow, $cookiePolicyUrl, $twitterUrl, $facebookUrl) {
     $params = array();
     $params['multipack_id'] = $multipack_id;
     $params['group_id'] = $group_id;
@@ -3736,24 +3853,12 @@
     $params['searchIntroHeader'] = $searchIntroHeader;
     $params['searchIntroText'] = $searchIntroText;
     $params['searchShowAll'] = $searchShowAll;
+    $params['searchUnitOfDistance'] = $searchUnitOfDistance;
     $params['cookiePolicyShow'] = $cookiePolicyShow;
     $params['cookiePolicyUrl'] = $cookiePolicyUrl;
     $params['twitterUrl'] = $twitterUrl;
     $params['facebookUrl'] = $facebookUrl;
     return CentralIndex::doCurl("POST","/multipack",$params);
-  }
-
-
-  /**
-   * Get a multipack
-   *
-   *  @param multipack_id - the unique id to search for
-   *  @return - the data from the api
-  */
-  public function getMultipack( $multipack_id) {
-    $params = array();
-    $params['multipack_id'] = $multipack_id;
-    return CentralIndex::doCurl("GET","/multipack",$params);
   }
 
 
@@ -3767,6 +3872,36 @@
     $params = array();
     $params['domainName'] = $domainName;
     return CentralIndex::doCurl("GET","/multipack/by_domain_name",$params);
+  }
+
+
+  /**
+   * duplicates a given multipack
+   *
+   *  @param multipack_id - the unique id to search for
+   *  @param domainName - the domain name to serve this multipack site on (no leading http:// or anything please)
+   *  @param group_id - the group to use for search
+   *  @return - the data from the api
+  */
+  public function getMultipackClone( $multipack_id, $domainName, $group_id) {
+    $params = array();
+    $params['multipack_id'] = $multipack_id;
+    $params['domainName'] = $domainName;
+    $params['group_id'] = $group_id;
+    return CentralIndex::doCurl("GET","/multipack/clone",$params);
+  }
+
+
+  /**
+   * returns the LESS theme from a multipack
+   *
+   *  @param multipack_id - the unique id to search for
+   *  @return - the data from the api
+  */
+  public function getMultipackLess( $multipack_id) {
+    $params = array();
+    $params['multipack_id'] = $multipack_id;
+    return CentralIndex::doCurl("GET","/multipack/less",$params);
   }
 
 
@@ -3846,19 +3981,6 @@
 
 
   /**
-   * Returns the product information given a valid product_id
-   *
-   *  @param product_id
-   *  @return - the data from the api
-  */
-  public function getProduct( $product_id) {
-    $params = array();
-    $params['product_id'] = $product_id;
-    return CentralIndex::doCurl("GET","/product",$params);
-  }
-
-
-  /**
    * Update/Add a product
    *
    *  @param product_id - The ID of the product
@@ -3892,6 +4014,19 @@
     $params['outro_paragraph'] = $outro_paragraph;
     $params['thanks_paragraph'] = $thanks_paragraph;
     return CentralIndex::doCurl("POST","/product",$params);
+  }
+
+
+  /**
+   * Returns the product information given a valid product_id
+   *
+   *  @param product_id
+   *  @return - the data from the api
+  */
+  public function getProduct( $product_id) {
+    $params = array();
+    $params['product_id'] = $product_id;
+    return CentralIndex::doCurl("GET","/product",$params);
   }
 
 
@@ -4083,19 +4218,6 @@
 
 
   /**
-   * Delete a publisher with a specified publisher_id
-   *
-   *  @param publisher_id
-   *  @return - the data from the api
-  */
-  public function deletePublisher( $publisher_id) {
-    $params = array();
-    $params['publisher_id'] = $publisher_id;
-    return CentralIndex::doCurl("DELETE","/publisher",$params);
-  }
-
-
-  /**
    * Returns publisher that matches a given publisher id
    *
    *  @param publisher_id
@@ -4105,6 +4227,19 @@
     $params = array();
     $params['publisher_id'] = $publisher_id;
     return CentralIndex::doCurl("GET","/publisher",$params);
+  }
+
+
+  /**
+   * Delete a publisher with a specified publisher_id
+   *
+   *  @param publisher_id
+   *  @return - the data from the api
+  */
+  public function deletePublisher( $publisher_id) {
+    $params = array();
+    $params['publisher_id'] = $publisher_id;
+    return CentralIndex::doCurl("DELETE","/publisher",$params);
   }
 
 
@@ -4150,6 +4285,19 @@
 
 
   /**
+   * With a known queue id, a queue item can be removed.
+   *
+   *  @param queue_id
+   *  @return - the data from the api
+  */
+  public function deleteQueue( $queue_id) {
+    $params = array();
+    $params['queue_id'] = $queue_id;
+    return CentralIndex::doCurl("DELETE","/queue",$params);
+  }
+
+
+  /**
    * Retrieve queue items.
    *
    *  @param limit
@@ -4161,19 +4309,6 @@
     $params['limit'] = $limit;
     $params['queue_name'] = $queue_name;
     return CentralIndex::doCurl("GET","/queue",$params);
-  }
-
-
-  /**
-   * With a known queue id, a queue item can be removed.
-   *
-   *  @param queue_id
-   *  @return - the data from the api
-  */
-  public function deleteQueue( $queue_id) {
-    $params = array();
-    $params['queue_id'] = $queue_id;
-    return CentralIndex::doCurl("DELETE","/queue",$params);
   }
 
 
@@ -4257,9 +4392,10 @@
    *  @param description
    *  @param active
    *  @param products
+   *  @param master_user_id
    *  @return - the data from the api
   */
-  public function postReseller( $reseller_id, $country, $name, $description, $active, $products) {
+  public function postReseller( $reseller_id, $country, $name, $description, $active, $products, $master_user_id) {
     $params = array();
     $params['reseller_id'] = $reseller_id;
     $params['country'] = $country;
@@ -4267,6 +4403,7 @@
     $params['description'] = $description;
     $params['active'] = $active;
     $params['products'] = $products;
+    $params['master_user_id'] = $master_user_id;
     return CentralIndex::doCurl("POST","/reseller",$params);
   }
 
@@ -4383,19 +4520,6 @@
 
 
   /**
-   * Make a url shorter
-   *
-   *  @param url - the url to shorten
-   *  @return - the data from the api
-  */
-  public function putShortenurl( $url) {
-    $params = array();
-    $params['url'] = $url;
-    return CentralIndex::doCurl("PUT","/shortenurl",$params);
-  }
-
-
-  /**
    * get the long url from the db
    *
    *  @param id - the id to fetch from the db
@@ -4405,6 +4529,19 @@
     $params = array();
     $params['id'] = $id;
     return CentralIndex::doCurl("GET","/shortenurl",$params);
+  }
+
+
+  /**
+   * Make a url shorter
+   *
+   *  @param url - the url to shorten
+   *  @return - the data from the api
+  */
+  public function putShortenurl( $url) {
+    $params = array();
+    $params['url'] = $url;
+    return CentralIndex::doCurl("PUT","/shortenurl",$params);
   }
 
 
@@ -4526,9 +4663,10 @@
    *  @param seed_masheryid
    *  @param supplier_masheryid
    *  @param country
+   *  @param data_filter
    *  @return - the data from the api
   */
-  public function postSyndicationCreate( $syndication_type, $publisher_id, $expiry_date, $entity_id, $group_id, $seed_masheryid, $supplier_masheryid, $country) {
+  public function postSyndicationCreate( $syndication_type, $publisher_id, $expiry_date, $entity_id, $group_id, $seed_masheryid, $supplier_masheryid, $country, $data_filter) {
     $params = array();
     $params['syndication_type'] = $syndication_type;
     $params['publisher_id'] = $publisher_id;
@@ -4538,6 +4676,7 @@
     $params['seed_masheryid'] = $seed_masheryid;
     $params['supplier_masheryid'] = $supplier_masheryid;
     $params['country'] = $country;
+    $params['data_filter'] = $data_filter;
     return CentralIndex::doCurl("POST","/syndication/create",$params);
   }
 
@@ -5079,6 +5218,25 @@
 
 
   /**
+   * Parse unstructured address data to fit our structured address objects
+   *
+   *  @param address
+   *  @param postcode
+   *  @param country
+   *  @param normalise
+   *  @return - the data from the api
+  */
+  public function getToolsParseAddress( $address, $postcode, $country, $normalise) {
+    $params = array();
+    $params['address'] = $address;
+    $params['postcode'] = $postcode;
+    $params['country'] = $country;
+    $params['normalise'] = $normalise;
+    return CentralIndex::doCurl("GET","/tools/parse/address",$params);
+  }
+
+
+  /**
    * Ring the person and verify their account
    *
    *  @param to - The phone number to verify
@@ -5280,13 +5438,15 @@
    *  @param entity_id - The entity_id to fetch
    *  @param reseller_masheryid - The reseller_masheryid
    *  @param destructive - Add the entity or simulate adding the entity
+   *  @param data_filter - The level of filtering to apply to the entity
    *  @return - the data from the api
   */
-  public function getToolsSyndicateEnablemedia( $entity_id, $reseller_masheryid, $destructive) {
+  public function getToolsSyndicateEnablemedia( $entity_id, $reseller_masheryid, $destructive, $data_filter) {
     $params = array();
     $params['entity_id'] = $entity_id;
     $params['reseller_masheryid'] = $reseller_masheryid;
     $params['destructive'] = $destructive;
+    $params['data_filter'] = $data_filter;
     return CentralIndex::doCurl("GET","/tools/syndicate/enablemedia",$params);
   }
 
@@ -5303,6 +5463,19 @@
     $params['entity_id'] = $entity_id;
     $params['destructive'] = $destructive;
     return CentralIndex::doCurl("GET","/tools/syndicate/factual",$params);
+  }
+
+
+  /**
+   * Fetch the entity and convert it to Factual CSV / TSV format
+   *
+   *  @param entity_id - The entity_id to fetch
+   *  @return - the data from the api
+  */
+  public function getToolsSyndicateFactualcsv( $entity_id) {
+    $params = array();
+    $params['entity_id'] = $entity_id;
+    return CentralIndex::doCurl("GET","/tools/syndicate/factualcsv",$params);
   }
 
 
@@ -5551,19 +5724,6 @@
 
 
   /**
-   * Fetching a traction
-   *
-   *  @param traction_id
-   *  @return - the data from the api
-  */
-  public function getTraction( $traction_id) {
-    $params = array();
-    $params['traction_id'] = $traction_id;
-    return CentralIndex::doCurl("GET","/traction",$params);
-  }
-
-
-  /**
    * Deleting a traction
    *
    *  @param traction_id
@@ -5573,6 +5733,19 @@
     $params = array();
     $params['traction_id'] = $traction_id;
     return CentralIndex::doCurl("DELETE","/traction",$params);
+  }
+
+
+  /**
+   * Fetching a traction
+   *
+   *  @param traction_id
+   *  @return - the data from the api
+  */
+  public function getTraction( $traction_id) {
+    $params = array();
+    $params['traction_id'] = $traction_id;
+    return CentralIndex::doCurl("GET","/traction",$params);
   }
 
 
@@ -5738,19 +5911,6 @@
 
 
   /**
-   * With a unique ID address an user can be retrieved
-   *
-   *  @param user_id
-   *  @return - the data from the api
-  */
-  public function getUser( $user_id) {
-    $params = array();
-    $params['user_id'] = $user_id;
-    return CentralIndex::doCurl("GET","/user",$params);
-  }
-
-
-  /**
    * Update user based on email address or social_network/social_network_id
    *
    *  @param email
@@ -5784,6 +5944,19 @@
     $params['group_id'] = $group_id;
     $params['admin_upgrader'] = $admin_upgrader;
     return CentralIndex::doCurl("POST","/user",$params);
+  }
+
+
+  /**
+   * With a unique ID address an user can be retrieved
+   *
+   *  @param user_id
+   *  @return - the data from the api
+  */
+  public function getUser( $user_id) {
+    $params = array();
+    $params['user_id'] = $user_id;
+    return CentralIndex::doCurl("GET","/user",$params);
   }
 
 
