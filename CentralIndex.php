@@ -261,9 +261,10 @@
    *  @param referrer_name
    *  @param destructive
    *  @param delete_mode - The type of object contribution deletion
+   *  @param master_entity_id - The entity you want this data to go to
    *  @return - the data from the api
   */
-  public function putBusiness( $name, $building_number, $branch_name, $address1, $address2, $address3, $district, $town, $county, $province, $postcode, $country, $latitude, $longitude, $timezone, $telephone_number, $additional_telephone_number, $email, $website, $category_id, $category_type, $do_not_display, $referrer_url, $referrer_name, $destructive, $delete_mode) {
+  public function putBusiness( $name, $building_number, $branch_name, $address1, $address2, $address3, $district, $town, $county, $province, $postcode, $country, $latitude, $longitude, $timezone, $telephone_number, $additional_telephone_number, $email, $website, $category_id, $category_type, $do_not_display, $referrer_url, $referrer_name, $destructive, $delete_mode, $master_entity_id) {
     $params = array();
     $params['name'] = $name;
     $params['building_number'] = $building_number;
@@ -291,6 +292,7 @@
     $params['referrer_name'] = $referrer_name;
     $params['destructive'] = $destructive;
     $params['delete_mode'] = $delete_mode;
+    $params['master_entity_id'] = $master_entity_id;
     return CentralIndex::doCurl("PUT","/business",$params);
   }
 
@@ -301,13 +303,15 @@
    *  @param json - Business JSON
    *  @param country - The country to fetch results for e.g. gb
    *  @param timezone
+   *  @param master_entity_id - The entity you want this data to go to
    *  @return - the data from the api
   */
-  public function putBusinessJson( $json, $country, $timezone) {
+  public function putBusinessJson( $json, $country, $timezone, $master_entity_id) {
     $params = array();
     $params['json'] = $json;
     $params['country'] = $country;
     $params['timezone'] = $timezone;
+    $params['master_entity_id'] = $master_entity_id;
     return CentralIndex::doCurl("PUT","/business/json",$params);
   }
 
@@ -5551,7 +5555,7 @@
 
 
   /**
-   * Fetch the entity and convert it to Nokia CSV format
+   * Fetch the entity and convert it to Nokia NBS CSV format
    *
    *  @param entity_id - The entity_id to fetch
    *  @return - the data from the api
