@@ -4563,9 +4563,10 @@
    *  @param data_type - The type of data being reported
    *  @param inactive_reason - The reason for making the entity inactive
    *  @param inactive_description - A description to accompany the inactive reasoning
+   *  @param feedback - Some feedback from the person submitting the signal
    *  @return - the data from the api
   */
-  public function postSignal( $entity_id, $country, $gen_id, $signal_type, $data_type, $inactive_reason, $inactive_description) {
+  public function postSignal( $entity_id, $country, $gen_id, $signal_type, $data_type, $inactive_reason, $inactive_description, $feedback) {
     $params = array();
     $params['entity_id'] = $entity_id;
     $params['country'] = $country;
@@ -4574,6 +4575,7 @@
     $params['data_type'] = $data_type;
     $params['inactive_reason'] = $inactive_reason;
     $params['inactive_description'] = $inactive_description;
+    $params['feedback'] = $feedback;
     return CentralIndex::doCurl("POST","/signal",$params);
   }
 
