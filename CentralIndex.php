@@ -3562,9 +3562,10 @@
    *  @param radius - Radius in km
    *  @param resolution
    *  @param country
+   *  @param num_results
    *  @return - the data from the api
   */
-  public function getLocationContext( $location_id, $latitude, $longitude, $radius, $resolution, $country) {
+  public function getLocationContext( $location_id, $latitude, $longitude, $radius, $resolution, $country, $num_results) {
     $params = array();
     $params['location_id'] = $location_id;
     $params['latitude'] = $latitude;
@@ -3572,6 +3573,7 @@
     $params['radius'] = $radius;
     $params['resolution'] = $resolution;
     $params['country'] = $country;
+    $params['num_results'] = $num_results;
     return CentralIndex::doCurl("GET","/location/context",$params);
   }
 
