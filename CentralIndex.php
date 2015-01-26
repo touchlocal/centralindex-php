@@ -304,14 +304,16 @@
    *  @param country - The country to fetch results for e.g. gb
    *  @param timezone
    *  @param master_entity_id - The entity you want this data to go to
+   *  @param queue_priority
    *  @return - the data from the api
   */
-  public function putBusinessJson( $json, $country, $timezone, $master_entity_id) {
+  public function putBusinessJson( $json, $country, $timezone, $master_entity_id, $queue_priority) {
     $params = array();
     $params['json'] = $json;
     $params['country'] = $country;
     $params['timezone'] = $timezone;
     $params['master_entity_id'] = $master_entity_id;
+    $params['queue_priority'] = $queue_priority;
     return CentralIndex::doCurl("PUT","/business/json",$params);
   }
 
