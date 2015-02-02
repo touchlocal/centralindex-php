@@ -4752,6 +4752,21 @@
 
 
   /**
+   * Get a Syndication by Reseller (Mashery ID) and optional entity ID
+   *
+   *  @param reseller_masheryid
+   *  @param entity_id
+   *  @return - the data from the api
+  */
+  public function getSyndicationBy_reseller( $reseller_masheryid, $entity_id) {
+    $params = array();
+    $params['reseller_masheryid'] = $reseller_masheryid;
+    $params['entity_id'] = $entity_id;
+    return CentralIndex::doCurl("GET","/syndication/by_reseller",$params);
+  }
+
+
+  /**
    * Cancel a syndication
    *
    *  @param syndication_id
@@ -5998,19 +6013,6 @@
 
 
   /**
-   * Given a transaction_id retrieve information on it
-   *
-   *  @param transaction_id
-   *  @return - the data from the api
-  */
-  public function getTransaction( $transaction_id) {
-    $params = array();
-    $params['transaction_id'] = $transaction_id;
-    return CentralIndex::doCurl("GET","/transaction",$params);
-  }
-
-
-  /**
    * Create a new transaction
    *
    *  @param entity_id
@@ -6030,6 +6032,19 @@
     $params['currency'] = $currency;
     $params['notes'] = $notes;
     return CentralIndex::doCurl("PUT","/transaction",$params);
+  }
+
+
+  /**
+   * Given a transaction_id retrieve information on it
+   *
+   *  @param transaction_id
+   *  @return - the data from the api
+  */
+  public function getTransaction( $transaction_id) {
+    $params = array();
+    $params['transaction_id'] = $transaction_id;
+    return CentralIndex::doCurl("GET","/transaction",$params);
   }
 
 
