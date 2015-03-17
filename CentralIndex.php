@@ -4171,14 +4171,16 @@
    *  @param type
    *  @param action
    *  @param data
+   *  @param slack_channel
    *  @return - the data from the api
   */
-  public function postOps_log( $success, $type, $action, $data) {
+  public function postOps_log( $success, $type, $action, $data, $slack_channel) {
     $params = array();
     $params['success'] = $success;
     $params['type'] = $type;
     $params['action'] = $action;
     $params['data'] = $data;
+    $params['slack_channel'] = $slack_channel;
     return CentralIndex::doCurl("POST","/ops_log",$params);
   }
 
