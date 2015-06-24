@@ -2300,9 +2300,10 @@
    *  @param language
    *  @param domain
    *  @param path
+   *  @param restrict_category_ids - Pipe delimited optional IDs to restrict matches to (optional)
    *  @return - the data from the api
   */
-  public function getEntitySearchByboundingbox( $latitude_1, $longitude_1, $latitude_2, $longitude_2, $per_page, $page, $country, $language, $domain, $path) {
+  public function getEntitySearchByboundingbox( $latitude_1, $longitude_1, $latitude_2, $longitude_2, $per_page, $page, $country, $language, $domain, $path, $restrict_category_ids) {
     $params = array();
     $params['latitude_1'] = $latitude_1;
     $params['longitude_1'] = $longitude_1;
@@ -2314,6 +2315,7 @@
     $params['language'] = $language;
     $params['domain'] = $domain;
     $params['path'] = $path;
+    $params['restrict_category_ids'] = $restrict_category_ids;
     return CentralIndex::doCurl("GET","/entity/search/byboundingbox",$params);
   }
 
@@ -2330,9 +2332,10 @@
    *  @param longitude - The decimal longitude of the search context (optional)
    *  @param domain
    *  @param path
+   *  @param restrict_category_ids - Pipe delimited optional IDs to restrict matches to (optional)
    *  @return - the data from the api
   */
-  public function getEntitySearchBylocation( $where, $per_page, $page, $country, $language, $latitude, $longitude, $domain, $path) {
+  public function getEntitySearchBylocation( $where, $per_page, $page, $country, $language, $latitude, $longitude, $domain, $path, $restrict_category_ids) {
     $params = array();
     $params['where'] = $where;
     $params['per_page'] = $per_page;
@@ -2343,6 +2346,7 @@
     $params['longitude'] = $longitude;
     $params['domain'] = $domain;
     $params['path'] = $path;
+    $params['restrict_category_ids'] = $restrict_category_ids;
     return CentralIndex::doCurl("GET","/entity/search/bylocation",$params);
   }
 
@@ -2361,9 +2365,10 @@
    *  @param domain
    *  @param path
    *  @param unitOfDistance
+   *  @param restrict_category_ids - Pipe delimited optional IDs to restrict matches to (optional)
    *  @return - the data from the api
   */
-  public function getEntitySearchGroupBynearest( $group_id, $country, $per_page, $page, $language, $latitude, $longitude, $where, $domain, $path, $unitOfDistance) {
+  public function getEntitySearchGroupBynearest( $group_id, $country, $per_page, $page, $language, $latitude, $longitude, $where, $domain, $path, $unitOfDistance, $restrict_category_ids) {
     $params = array();
     $params['group_id'] = $group_id;
     $params['country'] = $country;
@@ -2376,6 +2381,7 @@
     $params['domain'] = $domain;
     $params['path'] = $path;
     $params['unitOfDistance'] = $unitOfDistance;
+    $params['restrict_category_ids'] = $restrict_category_ids;
     return CentralIndex::doCurl("GET","/entity/search/group/bynearest",$params);
   }
 
@@ -2392,9 +2398,10 @@
    *  @param longitude - The decimal longitude of the centre point of the search
    *  @param domain
    *  @param path
+   *  @param restrict_category_ids - Pipe delimited optional IDs to restrict matches to (optional)
    *  @return - the data from the api
   */
-  public function getEntitySearchKeywordBynearest( $keyword, $country, $per_page, $page, $language, $latitude, $longitude, $domain, $path) {
+  public function getEntitySearchKeywordBynearest( $keyword, $country, $per_page, $page, $language, $latitude, $longitude, $domain, $path, $restrict_category_ids) {
     $params = array();
     $params['keyword'] = $keyword;
     $params['country'] = $country;
@@ -2405,6 +2412,7 @@
     $params['longitude'] = $longitude;
     $params['domain'] = $domain;
     $params['path'] = $path;
+    $params['restrict_category_ids'] = $restrict_category_ids;
     return CentralIndex::doCurl("GET","/entity/search/keyword/bynearest",$params);
   }
 
@@ -2419,9 +2427,10 @@
    *  @param language - An ISO compatible language code, E.g. en
    *  @param domain
    *  @param path
+   *  @param restrict_category_ids - Pipe delimited optional IDs to restrict matches to (optional)
    *  @return - the data from the api
   */
-  public function getEntitySearchWhat( $what, $per_page, $page, $country, $language, $domain, $path) {
+  public function getEntitySearchWhat( $what, $per_page, $page, $country, $language, $domain, $path, $restrict_category_ids) {
     $params = array();
     $params['what'] = $what;
     $params['per_page'] = $per_page;
@@ -2430,6 +2439,7 @@
     $params['language'] = $language;
     $params['domain'] = $domain;
     $params['path'] = $path;
+    $params['restrict_category_ids'] = $restrict_category_ids;
     return CentralIndex::doCurl("GET","/entity/search/what",$params);
   }
 
@@ -2448,9 +2458,10 @@
    *  @param language
    *  @param domain
    *  @param path
+   *  @param restrict_category_ids - Pipe delimited optional IDs to restrict matches to (optional)
    *  @return - the data from the api
   */
-  public function getEntitySearchWhatByboundingbox( $what, $latitude_1, $longitude_1, $latitude_2, $longitude_2, $per_page, $page, $country, $language, $domain, $path) {
+  public function getEntitySearchWhatByboundingbox( $what, $latitude_1, $longitude_1, $latitude_2, $longitude_2, $per_page, $page, $country, $language, $domain, $path, $restrict_category_ids) {
     $params = array();
     $params['what'] = $what;
     $params['latitude_1'] = $latitude_1;
@@ -2463,6 +2474,7 @@
     $params['language'] = $language;
     $params['domain'] = $domain;
     $params['path'] = $path;
+    $params['restrict_category_ids'] = $restrict_category_ids;
     return CentralIndex::doCurl("GET","/entity/search/what/byboundingbox",$params);
   }
 
@@ -2480,9 +2492,10 @@
    *  @param longitude - The decimal longitude of the search context (optional)
    *  @param domain
    *  @param path
+   *  @param restrict_category_ids - Pipe delimited optional IDs to restrict matches to (optional)
    *  @return - the data from the api
   */
-  public function getEntitySearchWhatBylocation( $what, $where, $per_page, $page, $country, $language, $latitude, $longitude, $domain, $path) {
+  public function getEntitySearchWhatBylocation( $what, $where, $per_page, $page, $country, $language, $latitude, $longitude, $domain, $path, $restrict_category_ids) {
     $params = array();
     $params['what'] = $what;
     $params['where'] = $where;
@@ -2494,6 +2507,7 @@
     $params['longitude'] = $longitude;
     $params['domain'] = $domain;
     $params['path'] = $path;
+    $params['restrict_category_ids'] = $restrict_category_ids;
     return CentralIndex::doCurl("GET","/entity/search/what/bylocation",$params);
   }
 
@@ -2510,9 +2524,10 @@
    *  @param longitude - The decimal longitude of the centre point of the search
    *  @param domain
    *  @param path
+   *  @param restrict_category_ids - Pipe delimited optional IDs to restrict matches to (optional)
    *  @return - the data from the api
   */
-  public function getEntitySearchWhatBynearest( $what, $country, $per_page, $page, $language, $latitude, $longitude, $domain, $path) {
+  public function getEntitySearchWhatBynearest( $what, $country, $per_page, $page, $language, $latitude, $longitude, $domain, $path, $restrict_category_ids) {
     $params = array();
     $params['what'] = $what;
     $params['country'] = $country;
@@ -2523,6 +2538,7 @@
     $params['longitude'] = $longitude;
     $params['domain'] = $domain;
     $params['path'] = $path;
+    $params['restrict_category_ids'] = $restrict_category_ids;
     return CentralIndex::doCurl("GET","/entity/search/what/bynearest",$params);
   }
 
@@ -2537,9 +2553,10 @@
    *  @param language - An ISO compatible language code, E.g. en
    *  @param domain
    *  @param path
+   *  @param restrict_category_ids - Pipe delimited optional IDs to restrict matches to (optional)
    *  @return - the data from the api
   */
-  public function getEntitySearchWho( $who, $per_page, $page, $country, $language, $domain, $path) {
+  public function getEntitySearchWho( $who, $per_page, $page, $country, $language, $domain, $path, $restrict_category_ids) {
     $params = array();
     $params['who'] = $who;
     $params['per_page'] = $per_page;
@@ -2548,6 +2565,7 @@
     $params['language'] = $language;
     $params['domain'] = $domain;
     $params['path'] = $path;
+    $params['restrict_category_ids'] = $restrict_category_ids;
     return CentralIndex::doCurl("GET","/entity/search/who",$params);
   }
 
@@ -2566,9 +2584,10 @@
    *  @param language - An ISO compatible language code, E.g. en
    *  @param domain
    *  @param path
+   *  @param restrict_category_ids - Pipe delimited optional IDs to restrict matches to (optional)
    *  @return - the data from the api
   */
-  public function getEntitySearchWhoByboundingbox( $who, $latitude_1, $longitude_1, $latitude_2, $longitude_2, $per_page, $page, $country, $language, $domain, $path) {
+  public function getEntitySearchWhoByboundingbox( $who, $latitude_1, $longitude_1, $latitude_2, $longitude_2, $per_page, $page, $country, $language, $domain, $path, $restrict_category_ids) {
     $params = array();
     $params['who'] = $who;
     $params['latitude_1'] = $latitude_1;
@@ -2581,6 +2600,7 @@
     $params['language'] = $language;
     $params['domain'] = $domain;
     $params['path'] = $path;
+    $params['restrict_category_ids'] = $restrict_category_ids;
     return CentralIndex::doCurl("GET","/entity/search/who/byboundingbox",$params);
   }
 
@@ -2598,9 +2618,10 @@
    *  @param language - An ISO compatible language code, E.g. en
    *  @param domain
    *  @param path
+   *  @param restrict_category_ids - Pipe delimited optional IDs to restrict matches to (optional)
    *  @return - the data from the api
   */
-  public function getEntitySearchWhoBylocation( $who, $where, $per_page, $page, $country, $latitude, $longitude, $language, $domain, $path) {
+  public function getEntitySearchWhoBylocation( $who, $where, $per_page, $page, $country, $latitude, $longitude, $language, $domain, $path, $restrict_category_ids) {
     $params = array();
     $params['who'] = $who;
     $params['where'] = $where;
@@ -2612,6 +2633,7 @@
     $params['language'] = $language;
     $params['domain'] = $domain;
     $params['path'] = $path;
+    $params['restrict_category_ids'] = $restrict_category_ids;
     return CentralIndex::doCurl("GET","/entity/search/who/bylocation",$params);
   }
 
@@ -2628,9 +2650,10 @@
    *  @param longitude - The decimal longitude of the centre point of the search
    *  @param domain
    *  @param path
+   *  @param restrict_category_ids - Pipe delimited optional IDs to restrict matches to (optional)
    *  @return - the data from the api
   */
-  public function getEntitySearchWhoBynearest( $who, $country, $per_page, $page, $language, $latitude, $longitude, $domain, $path) {
+  public function getEntitySearchWhoBynearest( $who, $country, $per_page, $page, $language, $latitude, $longitude, $domain, $path, $restrict_category_ids) {
     $params = array();
     $params['who'] = $who;
     $params['country'] = $country;
@@ -2641,6 +2664,7 @@
     $params['longitude'] = $longitude;
     $params['domain'] = $domain;
     $params['path'] = $path;
+    $params['restrict_category_ids'] = $restrict_category_ids;
     return CentralIndex::doCurl("GET","/entity/search/who/bynearest",$params);
   }
 
