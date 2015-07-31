@@ -5605,14 +5605,16 @@
    *  @param from - The phone number to call from
    *  @param pin - The pin to verify the phone number with
    *  @param twilio_voice - The language to read the verification in
+   *  @param extension - The pin to verify the phone number with
    *  @return - the data from the api
   */
-  public function getToolsPhonecallVerify( $to, $from, $pin, $twilio_voice) {
+  public function getToolsPhonecallVerify( $to, $from, $pin, $twilio_voice, $extension) {
     $params = array();
     $params['to'] = $to;
     $params['from'] = $from;
     $params['pin'] = $pin;
     $params['twilio_voice'] = $twilio_voice;
+    $params['extension'] = $extension;
     return CentralIndex::doCurl("GET","/tools/phonecall/verify",$params);
   }
 
