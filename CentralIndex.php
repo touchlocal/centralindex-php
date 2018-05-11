@@ -5653,14 +5653,16 @@
    *  @param language - The language to use to render the claim path e.g. en
    *  @param portal_name - The name of the website that entity is being claimed on e.g. YourLocal
    *  @param flatpack_id - The id of the flatpack site where the request originated
+   *  @param admin_host - The admin host to refer back to - will only be respected if whitelisted in configuration
    *  @return - the data from the api
   */
-  public function getTokenClaim( $entity_id, $language, $portal_name, $flatpack_id) {
+  public function getTokenClaim( $entity_id, $language, $portal_name, $flatpack_id, $admin_host) {
     $params = array();
     $params['entity_id'] = $entity_id;
     $params['language'] = $language;
     $params['portal_name'] = $portal_name;
     $params['flatpack_id'] = $flatpack_id;
+    $params['admin_host'] = $admin_host;
     return CentralIndex::doCurl("GET","/token/claim",$params);
   }
 
