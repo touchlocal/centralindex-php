@@ -2776,9 +2776,10 @@
    *  @param domain
    *  @param path
    *  @param restrict_category_ids - Pipe delimited optional IDs to restrict matches to (optional)
+   *  @param include_ads - Find nearby advertisers with tags that match the keyword
    *  @return - the data from the api
   */
-  public function getEntitySearchKeywordBynearest( $keyword, $country, $per_page, $page, $language, $latitude, $longitude, $domain, $path, $restrict_category_ids) {
+  public function getEntitySearchKeywordBynearest( $keyword, $country, $per_page, $page, $language, $latitude, $longitude, $domain, $path, $restrict_category_ids, $include_ads) {
     $params = array();
     $params['keyword'] = $keyword;
     $params['country'] = $country;
@@ -2790,6 +2791,7 @@
     $params['domain'] = $domain;
     $params['path'] = $path;
     $params['restrict_category_ids'] = $restrict_category_ids;
+    $params['include_ads'] = $include_ads;
     return CentralIndex::doCurl("GET","/entity/search/keyword/bynearest",$params);
   }
 
